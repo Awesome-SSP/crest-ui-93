@@ -1,6 +1,6 @@
-import { Bell, Settings, User, ChevronDown, BarChart3, DollarSign, TrendingDown, FileText, Map, Clock, AlertTriangle, BookOpen } from "lucide-react";
+import { Bell, Settings, User, ChevronDown, BarChart3, DollarSign, TrendingDown, FileText, Map, Clock, AlertTriangle, BookOpen, ShieldCheck, FileQuestion, MessageSquare, Users, Calendar, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,20 +19,125 @@ interface NavbarProps {
 
 const Navbar = ({ onNavigationHover }: NavbarProps) => {
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
+  const [theme, setTheme] = useState<'dark' | 'light'>(
+    () => (typeof window !== 'undefined' && document.documentElement.classList.contains('light')) ? 'light' : 'dark'
+  );
   const navigate = useNavigate();
   const location = useLocation();
+  // Theme toggle logic
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
+      document.body.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+      document.body.classList.remove('light');
+    }
+  }, [theme]);
 
-  const navigationItems = [
-    { name: "Dashboard", icon: BarChart3, section: "dashboard", path: "/" },
-    { name: "Dollars", icon: DollarSign, section: "dollars", path: "/" },
-    { name: "Liquidation", icon: TrendingDown, section: "liquidation", path: "/liquidation" },
-    { name: "Reports", icon: FileText, section: "reports", path: "/" },
-    { name: "Heat Maps", icon: Map, section: "heatmaps", path: "/heatmaps" },
-    { name: "Inv Chart Batches", icon: BarChart3, section: "invchartbatches", path: "/inv-chart-batches" },
-    { name: "Inventory", icon: BookOpen, section: "inventory", path: "/inventory" },
-    { name: "Timeline", icon: Clock, section: "timeline", path: "/timeline" },
-    { name: "State Issues", icon: AlertTriangle, section: "stateissues", path: "/" },
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
+  // Split navigation: main visible, overflow in 'More'
+  const mainNavItems = [
+    {
+      name: "Dashboard",
+      icon: BarChart3,
+      path: "/",
+      dropdown: [
+        { label: "Dollars", icon: DollarSign, path: "/dollars" },
+        { label: "Liquidation", icon: TrendingDown, path: "/liquidation" },
+        { label: "Heat-Maps", icon: Map, path: "/heatmaps" },
+        { label: "Inv Chart Batches", icon: BarChart3, path: "/inv-chart-batches" },
+        { label: "Inventory", icon: BookOpen, path: "/inventory" },
+        { label: "Judgment Performance", icon: ShieldCheck, path: "/judgment-performance" },
+        { label: "Timeline", icon: Clock, path: "/timeline" },
+      ],
+    },
+    { name: "Reports", icon: FileText, path: "/reports" },
+    { name: "FAQ", icon: FileQuestion, path: "/faq" },
+    { name: "Notices", icon: MessageSquare, path: "/notices" },
+    { name: "State Issues", icon: AlertTriangle, path: "/state-issues" },
   ];
+  const moreNavItems = [
+    { name: "Client Guide", icon: Users, path: "/client-guide" },
+    { name: "Schedule Batch Report", icon: Calendar, path: "/schedule-batch-report" },
+    { name: "Document Transfer", icon: Download, path: "/document-transfer" },
+    { name: "Administration", icon: Settings, path: "/administration" },
+  ];
+
+
+  // Render nav item as dropdown if it has dropdown items
+  // (Removed duplicate renderNavItem declaration)
+  const [dashboardOpen, setDashboardOpen] = useState(false);
+  // Track close timeout for dropdown
+  let dashboardCloseTimeout: ReturnType<typeof setTimeout> | null = null;
+  const renderNavItem = (item: any) => {
+    // Use theme-aware text color
+    const activeClass = theme === 'light'
+      ? 'bg-gray-200 text-navbar-foreground'
+      : 'bg-white/20 text-white';
+    const inactiveClass = theme === 'light'
+      ? 'text-navbar-foreground hover:bg-gray-100'
+      : 'text-white hover:bg-white/10';
+
+    // Only for Dashboard: open dropdown on hover
+    if (item.name === 'Dashboard' && item.dropdown && item.dropdown.length > 0) {
+      return (
+        <DropdownMenu key={item.name} open={dashboardOpen} onOpenChange={setDashboardOpen}>
+          <DropdownMenuTrigger asChild>
+            <button
+              className={`flex items-center gap-2 px-4 py-2 font-semibold text-base rounded-md transition-colors duration-200 ${isActivePage(item.path) ? activeClass : inactiveClass}`}
+              onMouseEnter={() => {
+                if (dashboardCloseTimeout) clearTimeout(dashboardCloseTimeout);
+                setDashboardOpen(true);
+              }}
+              onMouseLeave={() => {
+                dashboardCloseTimeout = setTimeout(() => setDashboardOpen(false), 200);
+              }}
+            >
+              <item.icon className="w-5 h-5" />
+              <span>{item.name}</span>
+              <ChevronDown className="w-4 h-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="start"
+            className="w-56 bg-white shadow-xl rounded-xl mt-2 p-2"
+            onMouseEnter={() => {
+              if (dashboardCloseTimeout) clearTimeout(dashboardCloseTimeout);
+              setDashboardOpen(true);
+            }}
+            onMouseLeave={() => {
+              dashboardCloseTimeout = setTimeout(() => setDashboardOpen(false), 200);
+            }}
+          >
+            {item.dropdown.map((drop: any) => (
+              <DropdownMenuItem
+                key={drop.label}
+                onClick={() => handleNavClick(drop.path, drop.label)}
+                className={`px-4 py-2 rounded-md text-gray-800 hover:bg-blue-50 font-medium flex items-center`}
+              >
+                {drop.icon && <drop.icon className="w-4 h-4 mr-2 text-primary" />} {drop.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    }
+    // All other nav items
+    return (
+      <button
+        key={item.name}
+        onClick={() => handleNavClick(item.path, item.name)}
+        className={`flex items-center gap-2 px-4 py-2 font-semibold text-base rounded-md transition-colors duration-200 ${isActivePage(item.path) ? activeClass : inactiveClass}`}
+      >
+        <item.icon className="w-5 h-5" />
+        <span>{item.name}</span>
+      </button>
+    );
+  };
 
   const handleNavHover = (section: string | null) => {
     setHoveredSection(section);
@@ -48,83 +153,111 @@ const Navbar = ({ onNavigationHover }: NavbarProps) => {
     return location.pathname === path;
   };
 
+
+  // UI components grouped for dropdown
+  const uiComponentGroups = [
+    {
+      group: "Forms",
+      items: ["input", "checkbox", "radio-group", "switch", "textarea", "form", "select", "slider", "input-otp", "toggle", "toggle-group", "label"],
+    },
+    {
+      group: "Data Display",
+      items: ["card", "badge", "avatar", "table", "progress", "skeleton", "calendar", "chart", "carousel", "tabs", "pagination", "separator"],
+    },
+    {
+      group: "Navigation",
+      items: ["breadcrumb", "menubar", "navigation-menu", "sidebar", "collapsible", "resizable", "scroll-area"],
+    },
+    {
+      group: "Feedback",
+      items: ["alert", "alert-dialog", "toast", "toaster", "sonner", "dialog", "drawer", "popover", "hover-card", "tooltip", "context-menu", "sheet", "command"],
+    },
+  ];
+
   return (
     <div>
-      <motion.nav 
-        className="bg-gradient-navbar shadow-navbar border-b border-navbar-border relative z-50"
+      <motion.nav
+        className="bg-gradient-navbar text-navbar-foreground shadow-navbar border-b border-navbar-border relative z-50"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="px-6 py-4">
+        <div className="px-2 py-1 md:px-4 md:py-2">
           <div className="flex items-center justify-between">
             {/* Logo and Navigation */}
-            <div className="flex items-center space-x-8">
-              <motion.div 
-                className="flex items-center space-x-3"
-                whileHover={{ scale: 1.02 }}
-              >
-                <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+            <div className="flex items-center gap-1 md:gap-2">
+              <div className="flex items-center gap-1 md:gap-2 mr-2 md:mr-6">
+                <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center shadow-md">
                   <BarChart3 className="w-5 h-5 text-navbar-foreground" />
                 </div>
-                <span className="text-xl font-bold text-navbar-foreground">Pipeway</span>
-              </motion.div>
-              
-              <nav className="hidden md:flex items-center space-x-1">
-                {navigationItems.map((item) => (
-                  <motion.div 
-                    key={item.name} 
-                    whileHover={{ scale: 1.05 }} 
-                    whileTap={{ scale: 0.95 }}
-                    onMouseEnter={() => handleNavHover(item.section)}
-                    onMouseLeave={() => handleNavHover(null)}
-                  >
-                    <Button
-                      onClick={() => handleNavClick(item.path, item.section)}
-                      variant={isActivePage(item.path) ? "secondary" : "ghost"}
-                      size="sm"
-                      className={`flex items-center space-x-2 px-4 py-2 cursor-pointer ${
-                        isActivePage(item.path) 
-                          ? "bg-white/20 text-navbar-foreground font-medium" 
-                          : "text-navbar-foreground/80 hover:text-navbar-foreground hover:bg-white/10"
-                      }`}
-                    >
-                      <item.icon className="w-4 h-4" />
-                      <span>{item.name}</span>
-                    </Button>
-                  </motion.div>
-                ))}
+                <span className="text-lg md:text-2xl font-extrabold text-navbar-foreground tracking-tight">Pipeway</span>
+              </div>
+              <nav className="flex items-center gap-1 flex-wrap">
+                {mainNavItems.map((item) => renderNavItem(item))}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="flex items-center gap-1 px-3 py-2 font-semibold text-base rounded-md text-white hover:bg-white/10 transition-colors duration-200">
+                      <span>More</span>
+                      <ChevronDown className="w-4 h-4" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-56 bg-white shadow-xl rounded-xl mt-2 p-2">
+                    {moreNavItems.map((item) => (
+                      <DropdownMenuItem
+                        key={item.name}
+                        onClick={() => handleNavClick(item.path, item.name)}
+                        className="px-4 py-2 rounded-md text-gray-800 hover:bg-blue-50 font-medium flex items-center"
+                      >
+                        {item.icon && <item.icon className="w-4 h-4 mr-2 text-primary" />} {item.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </nav>
             </div>
 
             {/* Right side actions */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 md:space-x-4">
+              {/* Theme toggle button */}
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Toggle theme"
+                  className="text-navbar-foreground/80 hover:text-navbar-foreground hover:bg-white/10"
+                  onClick={toggleTheme}
+                >
+                  {theme === 'dark' ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.07l-.71.71M21 12h-1M4 12H3m16.66 5.66l-.71-.71M4.05 4.93l-.71-.71M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" /></svg>
+                  )}
+                </Button>
+              </motion.div>
               <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                 <Button variant="ghost" size="icon" className="text-navbar-foreground/80 hover:text-navbar-foreground hover:bg-white/10">
                   <Bell className="w-5 h-5" />
                 </Button>
               </motion.div>
-              
               <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                 <Button variant="ghost" size="icon" className="text-navbar-foreground/80 hover:text-navbar-foreground hover:bg-white/10">
                   <Settings className="w-5 h-5" />
                 </Button>
               </motion.div>
-
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <motion.div whileHover={{ scale: 1.02 }}>
-                    <Button variant="ghost" className="flex items-center space-x-2 text-navbar-foreground/80 hover:text-navbar-foreground hover:bg-white/10">
-                      <Avatar className="w-8 h-8">
+                    <Button variant="ghost" className="flex items-center space-x-1 md:space-x-2 text-navbar-foreground/80 hover:text-navbar-foreground hover:bg-white/10 px-2 md:px-3">
+                      <Avatar className="w-7 h-7 md:w-8 md:h-8">
                         <AvatarImage src="/placeholder-avatar.jpg" />
                         <AvatarFallback className="bg-white/20 text-navbar-foreground">BD</AvatarFallback>
                       </Avatar>
-                      <span className="hidden md:block">Bandana</span>
+                      <span className="hidden md:block text-sm">Bandana</span>
                       <ChevronDown className="w-4 h-4" />
                     </Button>
                   </motion.div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuContent align="end" className="w-48 md:w-56">
                   <DropdownMenuItem>
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
