@@ -1,7 +1,5 @@
 import { motion } from "framer-motion";
-import { Clock, Calendar, TrendingUp, Target, ArrowRight } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import SubNavbar from "@/components/SubNavbar";
+import { Clock, Calendar, TrendingUp, Target, ArrowRight, Home } from "lucide-react";
 import ChartCard from "@/components/ChartCard";
 import StatsCard from "@/components/StatsCard";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -122,13 +120,18 @@ const PhaseCard = ({ phase, delay }: { phase: typeof phaseMetrics[0], delay: num
 
 const Timeline = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div className="min-h-screen bg-content-background">
+      {/* Breadcrumb */}
+      <div className="px-6 py-4 border-b border-border">
+        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+          <Home className="w-4 h-4" />
+          <span>Home</span>
+          <span>/</span>
+          <span className="text-foreground">Timeline</span>
+        </div>
+      </div>
       
-      <main className="bg-content-background min-h-screen">
-        <SubNavbar section="timeline" />
-        
-        <div className="px-6 py-8">
+      <div className="px-6 py-8">
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <StatsCard
@@ -310,9 +313,8 @@ const Timeline = () => {
             </ChartCard>
           </div>
         </div>
-      </main>
-    </div>
-  );
-};
+      </div>
+    );
+  };
 
 export default Timeline;
