@@ -9,6 +9,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Link } from "react-router-dom";
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from "@/components/ui/navigation-menu";
 
 const TopNavbar = () => {
   return (
@@ -21,7 +30,7 @@ const TopNavbar = () => {
       <div className="px-6 py-3">
         <div className="flex items-center justify-between">
           {/* Left side - Filters */}
-          <div className="flex items-center space-x-4 text-sm text-primary-foreground/90">
+          <div className="hidden xl:flex items-center space-x-4 text-sm text-primary-foreground/90">
             <span>Track Type: ALL</span>
             <span>Start Batch: 2024-10</span>
             <span>End Batch: 2025-09</span>
@@ -89,6 +98,82 @@ const TopNavbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+        </div>
+
+        {/* Dropdown Navigation */}
+        <div className="mt-3">
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Dashboards</NavigationMenuTrigger>
+                <NavigationMenuContent className="p-3">
+                  <div className="grid grid-cols-2 gap-2 min-w-[320px]">
+                    <NavigationMenuLink asChild>
+                      <Link to="/" className="px-3 py-2 rounded-md hover:bg-muted/30">Dashboard</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to="/dollars" className="px-3 py-2 rounded-md hover:bg-muted/30">Dollars</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to="/liquidation" className="px-3 py-2 rounded-md hover:bg-muted/30">Liquidation</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to="/heatmaps" className="px-3 py-2 rounded-md hover:bg-muted/30">Heat Maps</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to="/inv-chart-batches" className="px-3 py-2 rounded-md hover:bg-muted/30">Inv Chart Batches</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to="/timeline" className="px-3 py-2 rounded-md hover:bg-muted/30">Timeline</Link>
+                    </NavigationMenuLink>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Docs</NavigationMenuTrigger>
+                <NavigationMenuContent className="p-3">
+                  <div className="grid grid-cols-2 gap-2 min-w-[320px]">
+                    <NavigationMenuLink asChild>
+                      <Link to="/reports" className="px-3 py-2 rounded-md hover:bg-muted/30">Reports</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to="/faq" className="px-3 py-2 rounded-md hover:bg-muted/30">FAQ</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to="/notices" className="px-3 py-2 rounded-md hover:bg-muted/30">Notices</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to="/client-guide" className="px-3 py-2 rounded-md hover:bg-muted/30">Client Guide</Link>
+                    </NavigationMenuLink>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Operations</NavigationMenuTrigger>
+                <NavigationMenuContent className="p-3">
+                  <div className="grid grid-cols-2 gap-2 min-w-[320px]">
+                    <NavigationMenuLink asChild>
+                      <Link to="/state-issues" className="px-3 py-2 rounded-md hover:bg-muted/30">State Issues</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to="/schedule-batch-report" className="px-3 py-2 rounded-md hover:bg-muted/30">Schedule Batch Report</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to="/document-transfer" className="px-3 py-2 rounded-md hover:bg-muted/30">Document Transfer</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to="/administration" className="px-3 py-2 rounded-md hover:bg-muted/30">Administration</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to="/judgment-performance" className="px-3 py-2 rounded-md hover:bg-muted/30">Judgment Performance</Link>
+                    </NavigationMenuLink>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
       </div>
     </motion.nav>

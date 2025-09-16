@@ -41,56 +41,21 @@ const navigationItems: NavigationItem[] = [
       { name: "Analytics", icon: BarChart3, path: "/" },
     ]
   },
-  { name: "Dollars", icon: DollarSign, path: "/" },
+  { name: "Dollars", icon: DollarSign, path: "/dollars" },
   { name: "Liquidation", icon: TrendingDown, path: "/liquidation" },
   { name: "Heat-Maps", icon: Map, path: "/heatmaps" },
   { name: "Inv Chart Batches", icon: BarChart3, path: "/inv-chart-batches" },
   { name: "Inventory", icon: BookOpen, path: "/inventory" },
-  {
-    name: "Judgment Performance",
-    icon: ShieldCheck,
-    children: [
-      { name: "Performance", icon: BarChart3, path: "/" },
-      { name: "Reports", icon: FileText, path: "/" },
-    ]
-  },
+  { name: "Judgment Performance", icon: ShieldCheck, path: "/judgment-performance" },
   { name: "Timeline", icon: Clock, path: "/timeline" },
-  { name: "Reports", icon: FileText, path: "/" },
-  { name: "FAQ", icon: FileQuestion, path: "/" },
-  { name: "Notices", icon: MessageSquare, path: "/" },
-  {
-    name: "State Issues",
-    icon: AlertTriangle,
-    children: [
-      { name: "Active Issues", icon: AlertTriangle, path: "/" },
-      { name: "Resolved Issues", icon: AlertTriangle, path: "/" },
-    ]
-  },
-  {
-    name: "Client Guide",
-    icon: Users,
-    children: [
-      { name: "Guide", icon: FileText, path: "/" },
-      { name: "Documentation", icon: FileText, path: "/" },
-    ]
-  },
-  {
-    name: "Schedule Batch Report",
-    icon: Calendar,
-    children: [
-      { name: "Schedule", icon: Calendar, path: "/" },
-      { name: "Reports", icon: FileText, path: "/" },
-    ]
-  },
-  { name: "Document Transfer", icon: Download, path: "/" },
-  {
-    name: "Administration",
-    icon: Settings,
-    children: [
-      { name: "Settings", icon: Settings, path: "/" },
-      { name: "User Management", icon: Users, path: "/" },
-    ]
-  },
+  { name: "Reports", icon: FileText, path: "/reports" },
+  { name: "FAQ", icon: FileQuestion, path: "/faq" },
+  { name: "Notices", icon: MessageSquare, path: "/notices" },
+  { name: "State Issues", icon: AlertTriangle, path: "/state-issues" },
+  { name: "Client Guide", icon: Users, path: "/client-guide" },
+  { name: "Schedule Batch Report", icon: Calendar, path: "/schedule-batch-report" },
+  { name: "Document Transfer", icon: Download, path: "/document-transfer" },
+  { name: "Administration", icon: Settings, path: "/administration" },
 ];
 
 interface SidebarProps {
