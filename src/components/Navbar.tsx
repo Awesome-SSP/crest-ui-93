@@ -1,4 +1,4 @@
-import { Bell, Settings, User, ChevronDown, BarChart3, DollarSign, TrendingDown, FileText, Map, Clock, AlertTriangle, BookOpen } from "lucide-react";
+import { Bell, Settings, User, ChevronDown, BarChart3, DollarSign, TrendingDown, FileText, Map, Clock, AlertTriangle, BookOpen, ShieldCheck, FileQuestion, MessageSquare, Users, Calendar, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -23,16 +23,71 @@ const Navbar = ({ onNavigationHover }: NavbarProps) => {
   const location = useLocation();
 
   const navigationItems = [
-    { name: "Dashboard", icon: BarChart3, section: "dashboard", path: "/" },
-    { name: "Dollars", icon: DollarSign, section: "dollars", path: "/" },
-    { name: "Liquidation", icon: TrendingDown, section: "liquidation", path: "/liquidation" },
-    { name: "Reports", icon: FileText, section: "reports", path: "/" },
-    { name: "Heat Maps", icon: Map, section: "heatmaps", path: "/heatmaps" },
-    { name: "Inv Chart Batches", icon: BarChart3, section: "invchartbatches", path: "/inv-chart-batches" },
-    { name: "Inventory", icon: BookOpen, section: "inventory", path: "/inventory" },
-    { name: "Timeline", icon: Clock, section: "timeline", path: "/timeline" },
-    { name: "State Issues", icon: AlertTriangle, section: "stateissues", path: "/" },
+    {
+      name: "Dashboard",
+      icon: BarChart3,
+      path: "/",
+      dropdown: [
+        { label: "Dollars", icon: DollarSign, path: "/dollars" },
+        { label: "Liquidation", icon: TrendingDown, path: "/liquidation" },
+        { label: "Heat-Maps", icon: Map, path: "/heatmaps" },
+        { label: "Inv Chart Batches", icon: BarChart3, path: "/inv-chart-batches" },
+        { label: "Inventory", icon: BookOpen, path: "/inventory" },
+        { label: "Judgment Performance", icon: ShieldCheck, path: "/judgment-performance" },
+        { label: "Timeline", icon: Clock, path: "/timeline" },
+      ],
+    },
+    { name: "Reports", icon: FileText, path: "/reports" },
+    { name: "FAQ", icon: FileQuestion, path: "/faq" },
+    { name: "Notices", icon: MessageSquare, path: "/notices" },
+    { name: "State Issues", icon: AlertTriangle, path: "/state-issues" },
+    { name: "Client Guide", icon: Users, path: "/client-guide" },
+    { name: "Schedule Batch Report", icon: Calendar, path: "/schedule-batch-report" },
+    { name: "Document Transfer", icon: Download, path: "/document-transfer" },
+    { name: "Administration", icon: Settings, path: "/administration" },
   ];
+
+
+  // Render nav item as dropdown if it has dropdown items
+  // (Removed duplicate renderNavItem declaration)
+  const renderNavItem = (item: any) => {
+    if (item.dropdown && item.dropdown.length > 0) {
+      return (
+        <DropdownMenu key={item.name}>
+          <DropdownMenuTrigger asChild>
+            <button
+              className={`flex items-center gap-2 px-4 py-2 font-semibold text-base rounded-md transition-colors duration-200 ${isActivePage(item.path) ? "bg-white/20 text-white" : "text-white hover:bg-white/10"}`}
+            >
+              <item.icon className="w-5 h-5" />
+              <span>{item.name}</span>
+              <ChevronDown className="w-4 h-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-56 bg-white shadow-xl rounded-xl mt-2 p-2">
+            {item.dropdown.map((drop: any) => (
+              <DropdownMenuItem
+                key={drop.label}
+                onClick={() => handleNavClick(drop.path, drop.label)}
+                className={`px-4 py-2 rounded-md text-gray-800 hover:bg-blue-50 font-medium flex items-center`}
+              >
+                {drop.icon && <drop.icon className="w-4 h-4 mr-2 text-primary" />} {drop.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    }
+    return (
+      <button
+        key={item.name}
+        onClick={() => handleNavClick(item.path, item.name)}
+        className={`flex items-center gap-2 px-4 py-2 font-semibold text-base rounded-md transition-colors duration-200 ${isActivePage(item.path) ? "bg-white/20 text-white" : "text-white hover:bg-white/10"}`}
+      >
+        <item.icon className="w-5 h-5" />
+        <span>{item.name}</span>
+      </button>
+    );
+  };
 
   const handleNavHover = (section: string | null) => {
     setHoveredSection(section);
@@ -48,52 +103,47 @@ const Navbar = ({ onNavigationHover }: NavbarProps) => {
     return location.pathname === path;
   };
 
+
+  // UI components grouped for dropdown
+  const uiComponentGroups = [
+    {
+      group: "Forms",
+      items: ["input", "checkbox", "radio-group", "switch", "textarea", "form", "select", "slider", "input-otp", "toggle", "toggle-group", "label"],
+    },
+    {
+      group: "Data Display",
+      items: ["card", "badge", "avatar", "table", "progress", "skeleton", "calendar", "chart", "carousel", "tabs", "pagination", "separator"],
+    },
+    {
+      group: "Navigation",
+      items: ["breadcrumb", "menubar", "navigation-menu", "sidebar", "collapsible", "resizable", "scroll-area"],
+    },
+    {
+      group: "Feedback",
+      items: ["alert", "alert-dialog", "toast", "toaster", "sonner", "dialog", "drawer", "popover", "hover-card", "tooltip", "context-menu", "sheet", "command"],
+    },
+  ];
+
   return (
     <div>
-      <motion.nav 
-        className="bg-gradient-navbar shadow-navbar border-b border-navbar-border relative z-50"
+      <motion.nav
+        className="bg-gradient-navbar text-navbar-foreground shadow-navbar border-b border-navbar-border relative z-50"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="px-6 py-4">
+        <div className="px-8 py-2">
           <div className="flex items-center justify-between">
             {/* Logo and Navigation */}
-            <div className="flex items-center space-x-8">
-              <motion.div 
-                className="flex items-center space-x-3"
-                whileHover={{ scale: 1.02 }}
-              >
-                <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mr-6">
+                <div className="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center shadow-md">
                   <BarChart3 className="w-5 h-5 text-navbar-foreground" />
                 </div>
-                <span className="text-xl font-bold text-navbar-foreground">Pipeway</span>
-              </motion.div>
-              
-              <nav className="hidden md:flex items-center space-x-1">
-                {navigationItems.map((item) => (
-                  <motion.div 
-                    key={item.name} 
-                    whileHover={{ scale: 1.05 }} 
-                    whileTap={{ scale: 0.95 }}
-                    onMouseEnter={() => handleNavHover(item.section)}
-                    onMouseLeave={() => handleNavHover(null)}
-                  >
-                    <Button
-                      onClick={() => handleNavClick(item.path, item.section)}
-                      variant={isActivePage(item.path) ? "secondary" : "ghost"}
-                      size="sm"
-                      className={`flex items-center space-x-2 px-4 py-2 cursor-pointer ${
-                        isActivePage(item.path) 
-                          ? "bg-white/20 text-navbar-foreground font-medium" 
-                          : "text-navbar-foreground/80 hover:text-navbar-foreground hover:bg-white/10"
-                      }`}
-                    >
-                      <item.icon className="w-4 h-4" />
-                      <span>{item.name}</span>
-                    </Button>
-                  </motion.div>
-                ))}
+                <span className="text-2xl font-extrabold text-navbar-foreground tracking-tight">Pipeway</span>
+              </div>
+              <nav className="flex items-center gap-1">
+                {navigationItems.map((item) => renderNavItem(item))}
               </nav>
             </div>
 
@@ -104,7 +154,7 @@ const Navbar = ({ onNavigationHover }: NavbarProps) => {
                   <Bell className="w-5 h-5" />
                 </Button>
               </motion.div>
-              
+
               <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                 <Button variant="ghost" size="icon" className="text-navbar-foreground/80 hover:text-navbar-foreground hover:bg-white/10">
                   <Settings className="w-5 h-5" />
