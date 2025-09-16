@@ -95,14 +95,28 @@ const HeatMaps = () => {
             </div>
           </div>
         </div>
-        {/* Collection By State */}
-        <div className="bg-card rounded-2xl shadow-card border border-card-border p-6 flex flex-col">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-lg font-semibold">Heat</h2>
+        {/* Timeline Map */}
+        <div className="bg-card rounded-2xl shadow-card border border-card-border p-6 flex flex-col relative overflow-hidden">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-lg font-semibold">Heat</h2>
+              <p className="text-xs text-muted-foreground">Interactive timeline — hover a state for details</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setPlaying((p) => !p)}
+                className="px-3 py-1 rounded-md bg-primary text-primary-foreground hover:opacity-90"
+                aria-label={playing ? 'Pause' : 'Play'}
+              >
+                {playing ? 'Pause' : 'Play'}
+              </button>
+              <div className="text-xs text-muted-foreground">{timeSeries[timeIndex].label}</div>
+            </div>
           </div>
-          <div className="flex-1 flex flex-row items-center">
-            <div className="flex-1">
-              <ComposableMap projection="geoAlbersUsa" width={420} height={260} style={{ width: "100%", height: "auto" }}>
+
+          <div className="flex-1 flex flex-col md:flex-row items-center gap-4">
+            <div className="flex-1" style={{ minWidth: 0 }}>
+              <ComposableMap projection="geoAlbersUsa" width={720} height={380} style={{ width: '100%', height: 'auto' }}>
                 <Geographies geography={geoUrl}>
                   {({ geographies }) =>
                     geographies.map((geo) => {
@@ -112,9 +126,17 @@ const HeatMaps = () => {
                         <Geography
                           key={geo.rsmKey}
                           geography={geo}
+                          onMouseEnter={(evt) => {
+                            const rect = (evt.target as SVGElement).getBoundingClientRect();
+                            setTooltip({ x: rect.x + rect.width / 2, y: rect.y, content: `${geo.properties.name}: ${value}` });
+                          }}
+                          onMouseMove={(evt) => {
+                            setTooltip({ x: (evt as any).clientX + 12, y: (evt as any).clientY + 12, content: `${geo.properties.name}: ${value}` });
+                          }}
+                          onMouseLeave={() => setTooltip(null)}
                           fill={colorScaleGreen(value)}
                           stroke="#e5e7eb"
-                          style={{ outline: "none" }}
+                          style={{ outline: 'none', transition: 'fill 300ms linear' }}
                         />
                       );
                     })
@@ -122,13 +144,46 @@ const HeatMaps = () => {
                 </Geographies>
               </ComposableMap>
             </div>
-            {/* Legend */}
-            <div className="flex flex-col items-center ml-2">
-              <div className="h-40 w-3 bg-gradient-to-b from-[#22c55e] to-[#f0fdf4] rounded-full mb-2 border border-[#e5e7eb]" />
-              <span className="text-xs text-muted-foreground">Low</span>
-              <span className="text-xs text-muted-foreground mt-auto">High</span>
+
+            {/* Right controls */}
+            <div className="w-40 flex flex-col items-center">
+              {/* Horizontal Legend */}
+              <div className="w-full mb-3">
+                <div className="h-3 rounded-md overflow-hidden" style={{ background: 'linear-gradient(90deg, #f0fdf4 0%, #22c55e 100%)' }} />
+                <div className="flex justify-between text-[11px] text-muted-foreground mt-1">
+                  <span>0</span>
+                  <span>{Math.round(maxValue / 2)}</span>
+                  <span>{maxValue}</span>
+                </div>
+              </div>
+
+              {/* Timeline slider */}
+              <input
+                type="range"
+                min={0}
+                max={timeSeries.length - 1}
+                value={timeIndex}
+                onChange={(e) => setTimeIndex(Number(e.target.value))}
+                className="w-full"
+              />
+              <div className="text-xs text-muted-foreground mt-2">{timeSeries[timeIndex].label}</div>
+
+              {/* Compact stats */}
+              <div className="mt-4 text-sm text-center">
+                <div className="font-semibold">Top state</div>
+                <div className="text-muted-foreground">{Object.entries(timeSeries[timeIndex].values).sort((a: any, b: any) => b[1] - a[1])[0][0]}</div>
+              </div>
             </div>
           </div>
+
+          {/* Tooltip */}
+          {tooltip && (
+            <div style={{ position: 'fixed', left: tooltip.x, top: tooltip.y, transform: 'translate(-50%, -120%)', pointerEvents: 'none' }}>
+              <div className="bg-card/95 backdrop-blur-md px-3 py-1 rounded-md shadow-md text-sm border border-card-border">
+                {tooltip.content}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
