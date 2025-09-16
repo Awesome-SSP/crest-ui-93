@@ -1,42 +1,44 @@
-# Welcome to your Lovable project
 
-## Project info
+# crest-ui-93
 
-**URL**: https://lovable.dev/projects/dad3d92e-0a3f-4e53-9b01-3ba268a9828c
+## Project Info
 
-## How can I edit this code?
+**Live Demo:**
+> _There is currently **no public hosting** for the latest version of this project. To use the latest version, run it locally by following the instructions below._
+
+
+## How can I edit or run this code?
 
 There are several ways of editing your application.
 
-**Use Lovable**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/dad3d92e-0a3f-4e53-9b01-3ba268a9828c) and start prompting.
+**Run locally using your preferred IDE**
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+You need Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
 Follow these steps:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+
+# 1. Clone the repository using your Git URL
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# 2. Navigate to the project directory
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# 3. Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 4. Start the development server (default: http://localhost:8080)
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+
+---
+
+**Note:**
+- The latest version is only available locally after you run the above steps.
+- If you need to host the project, deploy the `dist` folder after running `npm run build` to your preferred static hosting provider.
 
 - Navigate to the desired file(s).
 - Click the "Edit" button (pencil icon) at the top right of the file view.
@@ -60,14 +62,49 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/dad3d92e-0a3f-4e53-9b01-3ba268a9828c) and click on Share -> Publish.
+# crest-ui-93
 
-## Can I connect a custom domain to my Lovable project?
+## Project Info
 
-Yes, you can!
+_There is currently **no public hosting** for this project. To use the latest version, run it locally by following the instructions below._
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## How to run this project locally
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+You need Node.js & npm installed ([install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)).
+
+Steps:
+
+1. Clone the repository using your Git URL:
+	```sh
+	git clone <YOUR_GIT_URL>
+	```
+
+2. Navigate to the project directory:
+	```sh
+	cd <YOUR_PROJECT_NAME>
+	```
+
+3. Install dependencies:
+	```sh
+	npm install
+	```
+
+4. Start the development server (default: http://localhost:8080):
+	```sh
+	npm run dev
+	```
+
+---
+
+## Tech Stack
+
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
+
+## Deployment
+
+To host the project, build it with `npm run build` and deploy the `dist` folder to your preferred static hosting provider.
