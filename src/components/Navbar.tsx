@@ -70,6 +70,9 @@ const Navbar = ({ onNavigationHover }: NavbarProps) => {
 
   // Render nav item as dropdown if it has dropdown items
   // (Removed duplicate renderNavItem declaration)
+  const [dashboardOpen, setDashboardOpen] = useState(false);
+  // Track close timeout for dropdown
+  let dashboardCloseTimeout: ReturnType<typeof setTimeout> | null = null;
   const renderNavItem = (item: any) => {
     // Use theme-aware text color
     const activeClass = theme === 'light'
@@ -79,19 +82,37 @@ const Navbar = ({ onNavigationHover }: NavbarProps) => {
       ? 'text-navbar-foreground hover:bg-gray-100'
       : 'text-white hover:bg-white/10';
 
-    if (item.dropdown && item.dropdown.length > 0) {
+    // Only for Dashboard: open dropdown on hover
+    if (item.name === 'Dashboard' && item.dropdown && item.dropdown.length > 0) {
       return (
-        <DropdownMenu key={item.name}>
+        <DropdownMenu key={item.name} open={dashboardOpen} onOpenChange={setDashboardOpen}>
           <DropdownMenuTrigger asChild>
             <button
               className={`flex items-center gap-2 px-4 py-2 font-semibold text-base rounded-md transition-colors duration-200 ${isActivePage(item.path) ? activeClass : inactiveClass}`}
+              onMouseEnter={() => {
+                if (dashboardCloseTimeout) clearTimeout(dashboardCloseTimeout);
+                setDashboardOpen(true);
+              }}
+              onMouseLeave={() => {
+                dashboardCloseTimeout = setTimeout(() => setDashboardOpen(false), 200);
+              }}
             >
               <item.icon className="w-5 h-5" />
               <span>{item.name}</span>
               <ChevronDown className="w-4 h-4" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56 bg-white shadow-xl rounded-xl mt-2 p-2">
+          <DropdownMenuContent
+            align="start"
+            className="w-56 bg-white shadow-xl rounded-xl mt-2 p-2"
+            onMouseEnter={() => {
+              if (dashboardCloseTimeout) clearTimeout(dashboardCloseTimeout);
+              setDashboardOpen(true);
+            }}
+            onMouseLeave={() => {
+              dashboardCloseTimeout = setTimeout(() => setDashboardOpen(false), 200);
+            }}
+          >
             {item.dropdown.map((drop: any) => (
               <DropdownMenuItem
                 key={drop.label}
@@ -105,6 +126,7 @@ const Navbar = ({ onNavigationHover }: NavbarProps) => {
         </DropdownMenu>
       );
     }
+    // All other nav items
     return (
       <button
         key={item.name}
