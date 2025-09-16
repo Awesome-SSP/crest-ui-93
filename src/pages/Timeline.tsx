@@ -44,47 +44,81 @@ const Timeline = () => {
   return (
     <div className="min-h-screen bg-content-background p-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Timeline</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold">Timeline</h1>
+          <div className="flex items-center gap-3">
+            <button className="px-3 py-2 rounded-md bg-muted/60 text-sm">Share</button>
+            <button className="px-3 py-2 rounded-md bg-primary text-primary-foreground text-sm">Export CSV</button>
+          </div>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {phaseMetrics.map((p, i) => (
-            <motion.div key={p.phase} className="p-4 rounded-xl border border-card-border bg-gradient-card" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}>
-              <div className="flex items-center justify-between mb-2">
-                <div>
-                  <div className="text-sm text-muted-foreground">{p.phase}</div>
-                  <div className="text-xl font-semibold">{p.avgDays} days</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm text-muted-foreground">Success</div>
-                  <div className="font-semibold">{p.successRate}%</div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        {/* KPI Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div className="p-4 rounded-xl bg-card border border-card-border flex items-center justify-between">
+            <div>
+              <div className="text-sm text-muted-foreground">Avg Resolution</div>
+              <div className="text-2xl font-semibold">78 days</div>
+            </div>
+            <div className="text-green-500 font-semibold">+4.2%</div>
+          </div>
+          <div className="p-4 rounded-xl bg-card border border-card-border flex items-center justify-between">
+            <div>
+              <div className="text-sm text-muted-foreground">Success Rate</div>
+              <div className="text-2xl font-semibold">72.4%</div>
+            </div>
+            <div className="text-blue-500 font-semibold">Stable</div>
+          </div>
+          <div className="p-4 rounded-xl bg-card border border-card-border flex items-center justify-between">
+            <div>
+              <div className="text-sm text-muted-foreground">Active Cases</div>
+              <div className="text-2xl font-semibold">12,482</div>
+            </div>
+            <div className="text-muted-foreground text-sm">Updated</div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-card rounded-xl border border-card-border p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h2 className="text-lg font-semibold">Timeline Chart</h2>
-                <div className="text-sm text-muted-foreground">Monitor phase durations over time</div>
+          <div className="lg:col-span-2">
+            <div className="bg-card rounded-xl border border-card-border p-6 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-lg font-semibold">Timeline Chart</h2>
+                  <div className="text-sm text-muted-foreground">Monitor phase durations and trends</div>
+                </div>
+                <div className="text-sm text-muted-foreground">Period: Last 12 months</div>
               </div>
-              <div className="text-sm text-muted-foreground">Period: Last 12 months</div>
+
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ height: 360 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={timelineData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="period" />
+                    <YAxis />
+                    <ReTooltip contentStyle={{ background: 'var(--card)', borderColor: 'var(--card-border)' }} />
+                    <Legend />
+                    <Line type="monotone" dataKey="Placement to First Payment" stroke="#2563eb" strokeWidth={2} dot={{ r: 3 }} />
+                    <Line type="monotone" dataKey="Placement to Suit" stroke="#f97316" strokeWidth={2} dot={{ r: 3 }} />
+                    <Line type="monotone" dataKey="Placement to Judgment" stroke="#ef4444" strokeWidth={2} dot={{ r: 3 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </motion.div>
             </div>
-            <div style={{ height: 320 }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={timelineData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="period" />
-                  <YAxis />
-                  <ReTooltip contentStyle={{ background: 'var(--card)', borderColor: 'var(--card-border)' }} />
-                  <Legend />
-                  <Line type="monotone" dataKey="Placement to First Payment" stroke="#2563eb" strokeWidth={2} dot={false} />
-                  <Line type="monotone" dataKey="Placement to Suit" stroke="#f97316" strokeWidth={2} dot={false} />
-                  <Line type="monotone" dataKey="Placement to Judgment" stroke="#ef4444" strokeWidth={2} dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {phaseMetrics.map((p, i) => (
+                <motion.div key={p.phase} className="p-4 rounded-xl bg-card border border-card-border" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}>
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <div className="text-sm text-muted-foreground">{p.phase}</div>
+                      <div className="text-lg font-semibold">{p.avgDays} days</div>
+                    </div>
+                    <div className="text-right text-muted-foreground">{p.successRate}%</div>
+                  </div>
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-blue-500 to-green-400" style={{ width: `${Math.min(100, p.successRate)}%` }} />
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
 
