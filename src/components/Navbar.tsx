@@ -1,6 +1,6 @@
 import { Bell, Settings, User, ChevronDown, BarChart3, DollarSign, TrendingDown, FileText, Map, Clock, AlertTriangle, BookOpen, ShieldCheck, FileQuestion, MessageSquare, Users, Calendar, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,8 +19,25 @@ interface NavbarProps {
 
 const Navbar = ({ onNavigationHover }: NavbarProps) => {
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
+  const [theme, setTheme] = useState<'dark' | 'light'>(
+    () => (typeof window !== 'undefined' && document.documentElement.classList.contains('light')) ? 'light' : 'dark'
+  );
   const navigate = useNavigate();
   const location = useLocation();
+  // Theme toggle logic
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
+      document.body.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+      document.body.classList.remove('light');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
 
   // Split navigation: main visible, overflow in 'More'
   const mainNavItems = [
@@ -54,12 +71,20 @@ const Navbar = ({ onNavigationHover }: NavbarProps) => {
   // Render nav item as dropdown if it has dropdown items
   // (Removed duplicate renderNavItem declaration)
   const renderNavItem = (item: any) => {
+    // Use theme-aware text color
+    const activeClass = theme === 'light'
+      ? 'bg-gray-200 text-navbar-foreground'
+      : 'bg-white/20 text-white';
+    const inactiveClass = theme === 'light'
+      ? 'text-navbar-foreground hover:bg-gray-100'
+      : 'text-white hover:bg-white/10';
+
     if (item.dropdown && item.dropdown.length > 0) {
       return (
         <DropdownMenu key={item.name}>
           <DropdownMenuTrigger asChild>
             <button
-              className={`flex items-center gap-2 px-4 py-2 font-semibold text-base rounded-md transition-colors duration-200 ${isActivePage(item.path) ? "bg-white/20 text-white" : "text-white hover:bg-white/10"}`}
+              className={`flex items-center gap-2 px-4 py-2 font-semibold text-base rounded-md transition-colors duration-200 ${isActivePage(item.path) ? activeClass : inactiveClass}`}
             >
               <item.icon className="w-5 h-5" />
               <span>{item.name}</span>
@@ -84,7 +109,7 @@ const Navbar = ({ onNavigationHover }: NavbarProps) => {
       <button
         key={item.name}
         onClick={() => handleNavClick(item.path, item.name)}
-        className={`flex items-center gap-2 px-4 py-2 font-semibold text-base rounded-md transition-colors duration-200 ${isActivePage(item.path) ? "bg-white/20 text-white" : "text-white hover:bg-white/10"}`}
+        className={`flex items-center gap-2 px-4 py-2 font-semibold text-base rounded-md transition-colors duration-200 ${isActivePage(item.path) ? activeClass : inactiveClass}`}
       >
         <item.icon className="w-5 h-5" />
         <span>{item.name}</span>
@@ -171,18 +196,32 @@ const Navbar = ({ onNavigationHover }: NavbarProps) => {
 
             {/* Right side actions */}
             <div className="flex items-center space-x-2 md:space-x-4">
+              {/* Theme toggle button */}
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Toggle theme"
+                  className="text-navbar-foreground/80 hover:text-navbar-foreground hover:bg-white/10"
+                  onClick={toggleTheme}
+                >
+                  {theme === 'dark' ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.07l-.71.71M21 12h-1M4 12H3m16.66 5.66l-.71-.71M4.05 4.93l-.71-.71M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" /></svg>
+                  )}
+                </Button>
+              </motion.div>
               <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                 <Button variant="ghost" size="icon" className="text-navbar-foreground/80 hover:text-navbar-foreground hover:bg-white/10">
                   <Bell className="w-5 h-5" />
                 </Button>
               </motion.div>
-
               <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                 <Button variant="ghost" size="icon" className="text-navbar-foreground/80 hover:text-navbar-foreground hover:bg-white/10">
                   <Settings className="w-5 h-5" />
                 </Button>
               </motion.div>
-
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <motion.div whileHover={{ scale: 1.02 }}>
