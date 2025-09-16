@@ -1,3 +1,31 @@
+import { useEffect } from "react";
+
+const Timeline = () => {
+  useEffect(() => {
+    document.title = "Timeline | Pipeway";
+  }, []);
+  return (
+    <div className="min-h-screen bg-content-background p-8">
+      <h1 className="text-3xl font-bold mb-8 text-center">Timeline</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="bg-card rounded-xl border border-card-border shadow-card p-8 flex flex-col items-center">
+          <h2 className="text-xl font-semibold mb-4">Timeline Chart</h2>
+          <div className="w-full h-56 bg-gray-100 rounded-lg flex items-center justify-center text-muted-foreground border border-dashed border-gray-300">
+            Timeline Chart Placeholder
+          </div>
+        </div>
+        <div className="bg-card rounded-xl border border-card-border shadow-card p-8 flex flex-col items-center">
+          <h2 className="text-xl font-semibold mb-4">Recent Events</h2>
+          <div className="w-full h-56 bg-gray-100 rounded-lg flex items-center justify-center text-muted-foreground border border-dashed border-gray-300">
+            Recent Events Placeholder
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Timeline;
 import { motion } from "framer-motion";
 import { Clock, Calendar, TrendingUp, Target, ArrowRight, Home } from "lucide-react";
 import ChartCard from "@/components/ChartCard";
@@ -89,232 +117,9 @@ const PhaseCard = ({ phase, delay }: { phase: typeof phaseMetrics[0], delay: num
       </div>
       <ArrowRight className="w-5 h-5 text-muted-foreground" />
     </div>
-    
-    <div className="grid grid-cols-2 gap-4">
-      <div className="text-center p-3 bg-muted/10 rounded-lg">
-        <div className="text-2xl font-bold text-card-foreground">{phase.avgDays}</div>
-        <div className="text-xs text-muted-foreground">Avg Days</div>
-      </div>
-      <div className="text-center p-3 bg-muted/10 rounded-lg">
-        <div className="text-2xl font-bold text-chart-2">{phase.successRate}%</div>
-        <div className="text-xs text-muted-foreground">Success Rate</div>
-      </div>
-    </div>
-    
-    <div className="mt-4">
-      <div className="flex justify-between text-xs text-muted-foreground mb-1">
-        <span>Performance</span>
-        <span>{phase.successRate}%</span>
-      </div>
-      <div className="w-full bg-muted/30 rounded-full h-2">
-        <motion.div
-          className={`h-2 rounded-full bg-${phase.color}`}
-          initial={{ width: 0 }}
-          animate={{ width: `${phase.successRate}%` }}
-          transition={{ delay: delay + 0.3, duration: 1 }}
-        />
-      </div>
+    <div className="flex flex-col gap-2 mt-2">
+      <div className="text-sm text-muted-foreground">Avg Days: <span className="font-semibold text-card-foreground">{phase.avgDays}</span></div>
+      <div className="text-sm text-muted-foreground">Success Rate: <span className="font-semibold text-card-foreground">{phase.successRate}%</span></div>
     </div>
   </motion.div>
 );
-
-const Timeline = () => {
-  return (
-    <div className="min-h-screen bg-content-background">
-      {/* Breadcrumb */}
-      <div className="px-6 py-4 border-b border-border">
-        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-          <Home className="w-4 h-4" />
-          <span>Home</span>
-          <span>/</span>
-          <span className="text-foreground">Timeline</span>
-        </div>
-      </div>
-      
-      <div className="px-6 py-8">
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <StatsCard
-              title="Avg Processing Time"
-              value="120 days"
-              change="-15 days improvement"
-              changeType="positive"
-              icon={Clock}
-              delay={0.1}
-            />
-            <StatsCard
-              title="Fastest Resolution"
-              value="28 days"
-              change="New record this month"
-              changeType="positive"
-              icon={Target}
-              delay={0.2}
-            />
-            <StatsCard
-              title="Cases in Progress"
-              value="1,847"
-              change="+127 from last month"
-              changeType="neutral"
-              icon={Calendar}
-              delay={0.3}
-            />
-            <StatsCard
-              title="Timeline Efficiency"
-              value="78.9%"
-              change="+5.2% from last quarter"
-              changeType="positive"
-              icon={TrendingUp}
-              delay={0.4}
-            />
-          </div>
-
-          {/* Main Timeline Chart */}
-          <div className="mb-8">
-            <ChartCard title="Timeline" delay={0.5}>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={timelineData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis 
-                      dataKey="period" 
-                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                      tickLine={{ stroke: "hsl(var(--border))" }}
-                    />
-                    <YAxis 
-                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                      tickLine={{ stroke: "hsl(var(--border))" }}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend wrapperStyle={{ color: "hsl(var(--card-foreground))" }} />
-                    
-                    <Line 
-                      type="monotone" 
-                      dataKey="Placement to First Payment" 
-                      stroke="hsl(var(--chart-1))" 
-                      strokeWidth={3}
-                      dot={{ fill: "hsl(var(--chart-1))", strokeWidth: 2, r: 4 }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="Placement to Suit" 
-                      stroke="hsl(var(--chart-2))" 
-                      strokeWidth={3}
-                      dot={{ fill: "hsl(var(--chart-2))", strokeWidth: 2, r: 4 }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="Placement to Judgment" 
-                      stroke="hsl(var(--chart-3))" 
-                      strokeWidth={3}
-                      dot={{ fill: "hsl(var(--chart-3))", strokeWidth: 2, r: 4 }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="Suit to Serve" 
-                      stroke="hsl(var(--chart-4))" 
-                      strokeWidth={3}
-                      dot={{ fill: "hsl(var(--chart-4))", strokeWidth: 2, r: 4 }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="Suit to Judgment" 
-                      stroke="hsl(var(--chart-5))" 
-                      strokeWidth={3}
-                      dot={{ fill: "hsl(var(--chart-5))", strokeWidth: 2, r: 4 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </ChartCard>
-          </div>
-
-          {/* Phase Breakdown */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
-            {phaseMetrics.map((phase, index) => (
-              <PhaseCard 
-                key={phase.phase} 
-                phase={phase} 
-                delay={0.6 + index * 0.1} 
-              />
-            ))}
-          </div>
-
-          {/* Performance Overview */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <ChartCard title="Timeline Performance Metrics" delay={1.1}>
-              <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 bg-muted/10 rounded-lg">
-                    <div className="text-2xl font-bold text-chart-2">95.2%</div>
-                    <div className="text-sm text-muted-foreground">On-Time Completion</div>
-                  </div>
-                  <div className="text-center p-4 bg-muted/10 rounded-lg">
-                    <div className="text-2xl font-bold text-chart-3">87.6%</div>
-                    <div className="text-sm text-muted-foreground">Quality Score</div>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  {[
-                    { metric: "Average Cycle Time", value: "120", unit: "days", target: "105" },
-                    { metric: "Fastest Resolution", value: "28", unit: "days", target: "30" },
-                    { metric: "Process Efficiency", value: "89", unit: "%", target: "85" },
-                    { metric: "Client Satisfaction", value: "94", unit: "%", target: "90" },
-                  ].map((item, index) => (
-                    <div key={item.metric} className="flex justify-between items-center p-3 bg-muted/10 rounded-lg">
-                      <div>
-                        <div className="font-medium text-card-foreground">{item.metric}</div>
-                        <div className="text-sm text-muted-foreground">Target: {item.target}{item.unit}</div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-lg font-bold text-card-foreground">{item.value}{item.unit}</div>
-                        <div className={`text-xs ${parseInt(item.value) >= parseInt(item.target) ? 'text-chart-2' : 'text-chart-1'}`}>
-                          {parseInt(item.value) >= parseInt(item.target) ? '✓ On Target' : '⚠ Below Target'}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </ChartCard>
-
-            <ChartCard title="Recent Timeline Events" delay={1.2}>
-              <div className="space-y-4 max-h-80 overflow-y-auto">
-                {[
-                  { event: "First Payment Received", case: "CASE-2024-1847", time: "2 hours ago", type: "success" },
-                  { event: "Suit Filed Successfully", case: "CASE-2024-1846", time: "4 hours ago", type: "info" },
-                  { event: "Judgment Awarded", case: "CASE-2024-1845", time: "6 hours ago", type: "success" },
-                  { event: "Service Completed", case: "CASE-2024-1844", time: "8 hours ago", type: "info" },
-                  { event: "Settlement Negotiated", case: "CASE-2024-1843", time: "1 day ago", type: "success" },
-                  { event: "Court Date Scheduled", case: "CASE-2024-1842", time: "1 day ago", type: "warning" },
-                  { event: "Payment Plan Established", case: "CASE-2024-1841", time: "2 days ago", type: "success" },
-                  { event: "Legal Review Completed", case: "CASE-2024-1840", time: "2 days ago", type: "info" },
-                ].map((item, index) => (
-                  <motion.div
-                    key={item.case}
-                    className="flex items-center space-x-4 p-3 bg-muted/10 rounded-lg border border-card-border"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 1.2 + index * 0.05 }}
-                    whileHover={{ scale: 1.01 }}
-                  >
-                    <div className={`w-3 h-3 rounded-full ${
-                      item.type === 'success' ? 'bg-chart-2' : 
-                      item.type === 'warning' ? 'bg-chart-3' : 'bg-chart-4'
-                    }`} />
-                    <div className="flex-1">
-                      <div className="font-medium text-card-foreground">{item.event}</div>
-                      <div className="text-sm text-muted-foreground">{item.case}</div>
-                    </div>
-                    <div className="text-xs text-muted-foreground">{item.time}</div>
-                  </motion.div>
-                ))}
-              </div>
-            </ChartCard>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-export default Timeline;
