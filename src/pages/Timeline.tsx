@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { motion } from "framer-motion";
 import { Calendar } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ReTooltip, Legend, ResponsiveContainer } from "recharts";
@@ -41,14 +41,36 @@ const Timeline = () => {
     document.title = "Timeline | Pipeway";
   }, []);
 
+  const exportCSV = useCallback(() => {
+    try {
+      const rows = timelineData;
+      if (!rows || rows.length === 0) return;
+      const headers = Object.keys(rows[0]);
+      const csvLines = [headers.join(',')];
+      for (const r of rows) {
+        csvLines.push(headers.map(h => JSON.stringify((r as any)[h] ?? '')).join(','));
+      }
+      const csv = csvLines.join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'timeline-data.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error('Export CSV failed', e);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-content-background p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold">Timeline</h1>
           <div className="flex items-center gap-3">
-            <button className="px-3 py-2 rounded-md bg-muted/60 text-sm">Share</button>
-            <button className="px-3 py-2 rounded-md bg-primary text-primary-foreground text-sm">Export CSV</button>
+            <button className="btn" aria-label="Share">Share</button>
+            <button onClick={exportCSV} className="btn btn-primary" aria-label="Export CSV">Export CSV</button>
           </div>
         </div>
 
