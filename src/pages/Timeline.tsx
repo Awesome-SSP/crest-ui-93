@@ -1,23 +1,155 @@
-import { useEffect } from "react";
+import React, { useCallback } from 'react';
+import { motion } from "framer-motion";
+import { Calendar } from "lucide-react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ReTooltip, Legend, ResponsiveContainer } from "recharts";
+
+const timelineData = [
+  { period: "Jan", "Placement to First Payment": 45, "Placement to Suit": 90, "Placement to Judgment": 180 },
+  { period: "Feb", "Placement to First Payment": 40, "Placement to Suit": 85, "Placement to Judgment": 175 },
+  { period: "Mar", "Placement to First Payment": 42, "Placement to Suit": 88, "Placement to Judgment": 178 },
+  { period: "Apr", "Placement to First Payment": 47, "Placement to Suit": 92, "Placement to Judgment": 182 },
+  { period: "May", "Placement to First Payment": 44, "Placement to Suit": 89, "Placement to Judgment": 179 },
+  { period: "Jun", "Placement to First Payment": 43, "Placement to Suit": 87, "Placement to Judgment": 176 },
+  { period: "Jul", "Placement to First Payment": 46, "Placement to Suit": 91, "Placement to Judgment": 181 },
+  { period: "Aug", "Placement to First Payment": 41, "Placement to Suit": 86, "Placement to Judgment": 174 },
+  { period: "Sep", "Placement to First Payment": 39, "Placement to Suit": 83, "Placement to Judgment": 169 },
+  { period: "Oct", "Placement to First Payment": 38, "Placement to Suit": 82, "Placement to Judgment": 168 },
+  { period: "Nov", "Placement to First Payment": 37, "Placement to Suit": 80, "Placement to Judgment": 165 },
+  { period: "Dec", "Placement to First Payment": 36, "Placement to Suit": 78, "Placement to Judgment": 162 }
+];
+
+const phaseMetrics = [
+  { phase: "Placement to First Payment", avgDays: 45, successRate: 78.5 },
+  { phase: "Placement to Suit", avgDays: 90, successRate: 65.2 },
+  { phase: "Placement to Judgment", avgDays: 180, successRate: 58.9 },
+  { phase: "Suit to Serve", avgDays: 30, successRate: 89.1 },
+  { phase: "Suit to Judgment", avgDays: 120, successRate: 71.3 }
+];
+
+const RecentEvent = ({ title, time }: { title: string; time: string }) => (
+  <div className="w-full p-3 rounded-md bg-card/50 border border-card-border flex items-start gap-3">
+    <div className="p-2 rounded-md bg-muted text-muted-foreground"><Calendar className="w-4 h-4" /></div>
+    <div>
+      <div className="font-medium">{title}</div>
+      <div className="text-xs text-muted-foreground">{time}</div>
+    </div>
+  </div>
+);
 
 const Timeline = () => {
-  useEffect(() => {
+  React.useEffect(() => {
     document.title = "Timeline | Pipeway";
   }, []);
+
+  const exportCSV = useCallback(() => {
+    try {
+      const rows = timelineData;
+      if (!rows || rows.length === 0) return;
+      const headers = Object.keys(rows[0]);
+      const csvLines = [headers.join(',')];
+      for (const r of rows) {
+        csvLines.push(headers.map(h => JSON.stringify((r as any)[h] ?? '')).join(','));
+      }
+      const csv = csvLines.join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'timeline-data.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error('Export CSV failed', e);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-content-background p-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">Timeline</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        <div className="bg-card rounded-xl border border-card-border shadow-card p-8 flex flex-col items-center">
-          <h2 className="text-xl font-semibold mb-4">Timeline Chart</h2>
-          <div className="w-full h-56 bg-gray-100 rounded-lg flex items-center justify-center text-muted-foreground border border-dashed border-gray-300">
-            Timeline Chart Placeholder
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold">Timeline</h1>
+          <div className="flex items-center gap-3">
+            <button className="btn" aria-label="Share">Share</button>
+            <button onClick={exportCSV} className="btn btn-primary" aria-label="Export CSV">Export CSV</button>
           </div>
         </div>
-        <div className="bg-card rounded-xl border border-card-border shadow-card p-8 flex flex-col items-center">
-          <h2 className="text-xl font-semibold mb-4">Recent Events</h2>
-          <div className="w-full h-56 bg-gray-100 rounded-lg flex items-center justify-center text-muted-foreground border border-dashed border-gray-300">
-            Recent Events Placeholder
+
+        {/* KPI Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div className="p-4 rounded-xl bg-card border border-card-border flex items-center justify-between">
+            <div>
+              <div className="text-sm text-muted-foreground">Avg Resolution</div>
+              <div className="text-2xl font-semibold">78 days</div>
+            </div>
+            <div className="text-green-500 font-semibold">+4.2%</div>
+          </div>
+          <div className="p-4 rounded-xl bg-card border border-card-border flex items-center justify-between">
+            <div>
+              <div className="text-sm text-muted-foreground">Success Rate</div>
+              <div className="text-2xl font-semibold">72.4%</div>
+            </div>
+            <div className="text-blue-500 font-semibold">Stable</div>
+          </div>
+          <div className="p-4 rounded-xl bg-card border border-card-border flex items-center justify-between">
+            <div>
+              <div className="text-sm text-muted-foreground">Active Cases</div>
+              <div className="text-2xl font-semibold">12,482</div>
+            </div>
+            <div className="text-muted-foreground text-sm">Updated</div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <div className="bg-card rounded-xl border border-card-border p-6 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-lg font-semibold">Timeline Chart</h2>
+                  <div className="text-sm text-muted-foreground">Monitor phase durations and trends</div>
+                </div>
+                <div className="text-sm text-muted-foreground">Period: Last 12 months</div>
+              </div>
+
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ height: 360 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={timelineData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="period" />
+                    <YAxis />
+                    <ReTooltip contentStyle={{ background: 'var(--card)', borderColor: 'var(--card-border)' }} />
+                    <Legend />
+                    <Line type="monotone" dataKey="Placement to First Payment" stroke="#2563eb" strokeWidth={2} dot={{ r: 3 }} />
+                    <Line type="monotone" dataKey="Placement to Suit" stroke="#f97316" strokeWidth={2} dot={{ r: 3 }} />
+                    <Line type="monotone" dataKey="Placement to Judgment" stroke="#ef4444" strokeWidth={2} dot={{ r: 3 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </motion.div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {phaseMetrics.map((p, i) => (
+                <motion.div key={p.phase} className="p-4 rounded-xl bg-card border border-card-border" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}>
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <div className="text-sm text-muted-foreground">{p.phase}</div>
+                      <div className="text-lg font-semibold">{p.avgDays} days</div>
+                    </div>
+                    <div className="text-right text-muted-foreground">{p.successRate}%</div>
+                  </div>
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-blue-500 to-green-400" style={{ width: `${Math.min(100, p.successRate)}%` }} />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-card rounded-xl border border-card-border p-6 flex flex-col gap-4">
+            <h2 className="text-lg font-semibold">Recent Events</h2>
+            <RecentEvent title="Batch 345 completed" time="2 hours ago" />
+            <RecentEvent title="New suit filings: 23" time="1 day ago" />
+            <RecentEvent title="Payment collections updated" time="3 days ago" />
+            <div className="mt-auto text-xs text-muted-foreground">View full activity log →</div>
           </div>
         </div>
       </div>
@@ -26,100 +158,4 @@ const Timeline = () => {
 };
 
 export default Timeline;
-import { motion } from "framer-motion";
-import { Clock, Calendar, TrendingUp, Target, ArrowRight, Home } from "lucide-react";
-import ChartCard from "@/components/ChartCard";
-import StatsCard from "@/components/StatsCard";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
-const timelineData = [
-  { period: "0", "Placement to First Payment": 2, "Placement to Suit": 1, "Placement to Judgment": 0.5, "Suit to Serve": 0.8, "Suit to Judgment": 0.3 },
-  { period: "1", "Placement to First Payment": 2, "Placement to Suit": 1, "Placement to Judgment": 0.5, "Suit to Serve": 0.8, "Suit to Judgment": 0.3 },
-  { period: "2", "Placement to First Payment": 2, "Placement to Suit": 1, "Placement to Judgment": 0.5, "Suit to Serve": 0.8, "Suit to Judgment": 0.3 },
-  { period: "3", "Placement to First Payment": 2, "Placement to Suit": 1, "Placement to Judgment": 0.5, "Suit to Serve": 0.8, "Suit to Judgment": 0.3 },
-  { period: "4", "Placement to First Payment": 2, "Placement to Suit": 1, "Placement to Judgment": 0.5, "Suit to Serve": 0.8, "Suit to Judgment": 0.3 },
-  { period: "5", "Placement to First Payment": 2, "Placement to Suit": 1, "Placement to Judgment": 0.5, "Suit to Serve": 0.8, "Suit to Judgment": 0.3 },
-  { period: "6", "Placement to First Payment": 2, "Placement to Suit": 1, "Placement to Judgment": 0.5, "Suit to Serve": 0.8, "Suit to Judgment": 0.3 },
-  { period: "7", "Placement to First Payment": 2, "Placement to Suit": 1, "Placement to Judgment": 0.5, "Suit to Serve": 0.8, "Suit to Judgment": 0.3 },
-  { period: "8", "Placement to First Payment": 2, "Placement to Suit": 1, "Placement to Judgment": 0.5, "Suit to Serve": 0.8, "Suit to Judgment": 0.3 },
-  { period: "9", "Placement to First Payment": 2, "Placement to Suit": 1, "Placement to Judgment": 0.5, "Suit to Serve": 0.8, "Suit to Judgment": 0.3 },
-];
-
-const phaseMetrics = [
-  {
-    phase: "Placement to First Payment",
-    avgDays: 45,
-    successRate: 78.5,
-    description: "Time from initial placement to first payment received",
-    color: "chart-1"
-  },
-  {
-    phase: "Placement to Suit",
-    avgDays: 90,
-    successRate: 65.2,
-    description: "Time from placement to legal suit filing",
-    color: "chart-2"
-  },
-  {
-    phase: "Placement to Judgment",
-    avgDays: 180,
-    successRate: 58.9,
-    description: "Complete timeline from placement to final judgment",
-    color: "chart-3"
-  },
-  {
-    phase: "Suit to Serve",
-    avgDays: 30,
-    successRate: 89.1,
-    description: "Time from suit filing to successful service",
-    color: "chart-4"
-  },
-  {
-    phase: "Suit to Judgment",
-    avgDays: 120,
-    successRate: 71.3,
-    description: "Time from suit filing to court judgment",
-    color: "chart-5"
-  }
-];
-
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-card border border-card-border rounded-lg p-3 shadow-lg">
-        <p className="text-card-foreground font-medium mb-2">Period {label}</p>
-        {payload.map((entry: any, index: number) => (
-          <p key={index} className="text-sm" style={{ color: entry.color }}>
-            {entry.dataKey}: {entry.value} months
-          </p>
-        ))}
-      </div>
-    );
-  }
-  return null;
-};
-
-const PhaseCard = ({ phase, delay }: { phase: typeof phaseMetrics[0], delay: number }) => (
-  <motion.div
-    className="p-6 bg-gradient-card border border-card-border rounded-xl"
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay }}
-    whileHover={{ scale: 1.02, y: -5 }}
-  >
-    <div className="flex items-start justify-between mb-4">
-      <div className="flex items-center space-x-3">
-        <div className={`w-4 h-4 rounded-full bg-${phase.color}`} />
-        <div>
-          <h3 className="font-semibold text-card-foreground">{phase.phase}</h3>
-          <p className="text-sm text-muted-foreground">{phase.description}</p>
-        </div>
-      </div>
-      <ArrowRight className="w-5 h-5 text-muted-foreground" />
-    </div>
-    <div className="flex flex-col gap-2 mt-2">
-      <div className="text-sm text-muted-foreground">Avg Days: <span className="font-semibold text-card-foreground">{phase.avgDays}</span></div>
-      <div className="text-sm text-muted-foreground">Success Rate: <span className="font-semibold text-card-foreground">{phase.successRate}%</span></div>
-    </div>
-  </motion.div>
-);
