@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Package, BarChart3, TrendingUp, FileText, Home } from "lucide-react";
+import { Package, BarChart3, TrendingUp, FileText } from "lucide-react";
 import ChartCard from "@/components/ChartCard";
 import StatsCard from "@/components/StatsCard";
 
@@ -82,15 +82,6 @@ const ConversionMetric = ({ title, percentage, change, delay }: {
 const Inventory = () => {
   return (
     <div className="min-h-screen bg-content-background">
-      {/* Breadcrumb */}
-      <div className="px-6 py-4 border-b border-border">
-        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-          <Home className="w-4 h-4" />
-          <span>Home</span>
-          <span>/</span>
-          <span className="text-foreground">Inventory</span>
-        </div>
-      </div>
       
       <div className="px-6 py-8">
           {/* Stats Grid */}

@@ -69,10 +69,10 @@ All colors MUST be HSL.
     --shadow-card: 0 10px 30px -10px hsl(240 10% 3.9% / 0.3);
     --shadow-navbar: 0 8px 32px hsl(345 82% 52% / 0.15);
 
-      /* Glass effects */
-      --glass-bg: 240 4% 12%;
-      --glass-border: 240 3% 18%;
-      --glass-blur: 8px;
+    /* Glass effects */
+    --glass-bg: 240 4% 12%;
+    --glass-border: 240 3% 18%;
+    --glass-blur: 8px;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;

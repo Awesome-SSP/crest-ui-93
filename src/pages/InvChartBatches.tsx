@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { BarChart3, PieChart, Users, CheckCircle, Clock, AlertCircle, Home } from "lucide-react";
+import { BarChart3, PieChart, Users, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import ChartCard from "@/components/ChartCard";
 import StatsCard from "@/components/StatsCard";
 import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
@@ -58,15 +58,6 @@ const LoadingSpinner = () => (
 const InvChartBatches = () => {
   return (
     <div className="min-h-screen bg-content-background">
-      {/* Breadcrumb */}
-      <div className="px-6 py-4 border-b border-border">
-        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-          <Home className="w-4 h-4" />
-          <span>Home</span>
-          <span>/</span>
-          <span className="text-foreground">Inv Chart Batches</span>
-        </div>
-      </div>
       
       <div className="px-6 py-8">
           {/* Stats Grid */}

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { DollarSign, TrendingUp, TrendingDown, Users, Target, BarChart3, Home } from "lucide-react";
+import { DollarSign, TrendingUp, TrendingDown, Users, Target, BarChart3 } from "lucide-react";
 import ChartCard from "@/components/ChartCard";
 import StatsCard from "@/components/StatsCard";
 import PaymentsByBucketChart from "@/components/PaymentsByBucketChart";
@@ -8,15 +8,6 @@ import CostsCollectionsChart from "@/components/CostsCollectionsChart";
 const Index = () => {
   return (
     <div className="min-h-screen bg-content-background">
-      {/* Breadcrumb */}
-      <div className="px-6 py-4 border-b border-border">
-        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-          <Home className="w-4 h-4" />
-          <span>Home</span>
-          <span>/</span>
-          <span className="text-foreground">Dashboard</span>
-        </div>
-      </div>
       
       <div className="px-6 py-8">
         {/* Stats Grid */}

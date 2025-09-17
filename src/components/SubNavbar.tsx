@@ -132,18 +132,7 @@ const SubNavbar = ({ section = "dashboard" }: SubNavbarProps) => {
             </div>
           </div>
 
-          {/* Breadcrumb */}
-          <div className="hidden lg:flex items-center space-x-2 text-sub-navbar-foreground/70">
-            <div className="flex items-center space-x-2">
-              <Home className="w-4 h-4" />
-              <span className="text-sm">Home</span>
-            </div>
-            <span className="text-xs">/</span>
-            <div className="flex items-center space-x-2">
-              <SectionIcon className="w-4 h-4 text-primary" />
-              <span className="text-sm text-primary capitalize">{section}</span>
-            </div>
-          </div>
+          {/* breadcrumb removed - use universal breadcrumb in Layout */}
         </div>
       </div>
     </motion.div>

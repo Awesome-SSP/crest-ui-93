@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { TrendingDown, DollarSign, Percent, Calendar, Home } from "lucide-react";
+import { TrendingDown, DollarSign, Percent, Calendar } from "lucide-react";
 import ChartCard from "@/components/ChartCard";
 import StatsCard from "@/components/StatsCard";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -55,15 +55,6 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 const Liquidation = () => {
   return (
     <div className="min-h-screen bg-content-background">
-      {/* Breadcrumb */}
-      <div className="px-6 py-4 border-b border-border">
-        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-          <Home className="w-4 h-4" />
-          <span>Home</span>
-          <span>/</span>
-          <span className="text-foreground">Liquidation</span>
-        </div>
-      </div>
       
       <div className="px-6 py-8">
           {/* Stats Grid */}
