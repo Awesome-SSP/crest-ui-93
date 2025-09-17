@@ -3,6 +3,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+
+/**
+ * Navbar
+ * ----------
+ * Top-level application navigation. Handles:
+ * - Rendering primary navigation and an overflow 'More' menu
+ * - A hover-driven Dashboard dropdown with short close timeout so users can
+ *   move into the dropdown content without it collapsing immediately.
+ * - Theme toggle (light/dark) that toggles the document root class.
+ *
+ * TODO: Replace the inline `mainNavItems` and `moreNavItems` arrays with a
+ * config-driven source or server-provided menu for large apps.
+ */
 import {
   DropdownMenu,
   DropdownMenuContent,

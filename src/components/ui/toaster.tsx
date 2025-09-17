@@ -1,6 +1,11 @@
 import { useToast } from "@/hooks/use-toast";
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "@/components/ui/toast";
 
+// Toaster
+// ----------------
+// Renders the list of active toasts managed by `use-toast`. This component
+// should be mounted once (typically near the app root) so that any call to
+// the `toast()` helper will display a visible message to the user.
 export function Toaster() {
   const { toasts } = useToast();
 

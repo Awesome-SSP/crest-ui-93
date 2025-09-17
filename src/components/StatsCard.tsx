@@ -2,6 +2,23 @@ import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
+/**
+ * StatsCard
+ * ----------
+ * Compact statistic card used throughout the dashboard to display a single
+ * metric and change indicator.
+ *
+ * Props:
+ * - title: label for the metric
+ * - value: formatted value (string) to display prominently
+ * - change: small text describing delta (e.g., +4.2%)
+ * - changeType: determines color for the change indicator
+ * - icon: Lucide icon component to render
+ *
+ * TODO: consider accepting a `trend` numeric value and derive the color and
+ * accessibility-friendly annotations (aria-live) automatically.
+ */
+
 interface StatsCardProps {
   title: string;
   value: string;

@@ -1,8 +1,27 @@
+// Timeline.tsx
+// ----------------
+// A dashboard-style page that displays a 12-month timeline of phase durations
+// and provides utility actions such as sharing and exporting the data.
+//
+// Key features:
+// - Responsive Recharts LineChart rendering `timelineData`.
+// - KPI cards and animated phase cards for quick at-a-glance metrics.
+// - Share button (uses the Web Share API with clipboard fallback) and
+//   Download CSV (exports `timelineData` as a CSV file).
+//
+// The file intentionally keeps small sample data inline (timelineData) for
+// demo and local development; swap this with a remote API or props when
+// integrating with real data.
+
 import React, { useCallback } from 'react';
 import { motion } from "framer-motion";
-import { Calendar } from "lucide-react";
+import { Calendar, Download, Share2 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ReTooltip, Legend, ResponsiveContainer } from "recharts";
 
+// Sample timeline data (12 months). Each object represents a period and
+// values for multiple series used by the LineChart and export functions.
+// TODO: Replace this with a prop or an API fetch to supply real timeline data.
 const timelineData = [
   { period: "Jan", "Placement to First Payment": 45, "Placement to Suit": 90, "Placement to Judgment": 180 },
   { period: "Feb", "Placement to First Payment": 40, "Placement to Suit": 85, "Placement to Judgment": 175 },
@@ -18,6 +37,8 @@ const timelineData = [
   { period: "Dec", "Placement to First Payment": 36, "Placement to Suit": 78, "Placement to Judgment": 162 }
 ];
 
+// Sample metrics used to render the phase cards below the chart. These are
+// intentionally simplified for demo purposes.
 const phaseMetrics = [
   { phase: "Placement to First Payment", avgDays: 45, successRate: 78.5 },
   { phase: "Placement to Suit", avgDays: 90, successRate: 65.2 },
@@ -26,6 +47,10 @@ const phaseMetrics = [
   { phase: "Suit to Judgment", avgDays: 120, successRate: 71.3 }
 ];
 
+// RecentEvent - small presentational component used in the Recent Events panel
+// Props:
+// - title: short event title
+// - time: human-friendly timestamp
 const RecentEvent = ({ title, time }: { title: string; time: string }) => (
   <div className="w-full p-3 rounded-md bg-card/50 border border-card-border flex items-start gap-3">
     <div className="p-2 rounded-md bg-muted text-muted-foreground"><Calendar className="w-4 h-4" /></div>
@@ -37,10 +62,47 @@ const RecentEvent = ({ title, time }: { title: string; time: string }) => (
 );
 
 const Timeline = () => {
+  // Set the document title for accessibility and clarity
   React.useEffect(() => {
     document.title = "Timeline | Pipeway";
   }, []);
 
+  // handleShare
+  // Tries to invoke the native Web Share API for the best UX. If unavailable
+  // or it fails, falls back to copying the URL to the clipboard and showing
+  // an app toast. If clipboard access is blocked, prompts the user with the
+  // URL as the last resort.
+  const handleShare = React.useCallback(async () => {
+    const shareData = {
+      title: document.title || 'Timeline',
+      text: 'Check out this timeline view',
+      url: window.location.href,
+    } as any;
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        toast({ title: 'Shared', description: 'Shared via native share sheet.' });
+        return;
+      }
+    } catch (err) {
+      // ignore and fallback
+    }
+
+    // Fallback: copy to clipboard
+    try {
+      await navigator.clipboard.writeText(shareData.url);
+      toast({ title: 'Link copied', description: 'Timeline URL copied to clipboard.' });
+    } catch (e) {
+      // final fallback: prompt
+      prompt('Copy this link', shareData.url);
+    }
+  }, []);
+
+  // exportCSV
+  // Serializes `timelineData` to CSV and triggers a browser download.
+  // This is a minimal exporter for demonstration; escape rules are
+  // handled via JSON.stringify for simple cell quoting.
   const exportCSV = useCallback(() => {
     try {
       const rows = timelineData;
@@ -63,14 +125,92 @@ const Timeline = () => {
     }
   }, []);
 
+  // Export a colored Excel-compatible HTML table using theme colors
+  // exportColored
+  // Builds an HTML table styled via the app's CSS variables and saves it
+  // as an Excel-compatible `.xls` file. The generated file uses simple
+  // inline styles and a lightweight HSL->HEX helper to map theme tokens.
+  // Note: the UI button for this export was removed per request, but the
+  // function remains if you want to re-enable it programmatically.
+  const exportColored = useCallback(() => {
+    try {
+      const rows = timelineData;
+      if (!rows || rows.length === 0) return;
+
+      const getVar = (name: string) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+      const hslToHex = (hsl: string) => {
+        // expect 'h s% l%'
+        const m = hsl.match(/(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)%\s+(\d+(?:\.\d+)?)%/);
+        if (!m) return '#ffffff';
+        const h = parseFloat(m[1]);
+        const s = parseFloat(m[2]) / 100;
+        const l = parseFloat(m[3]) / 100;
+        const a = s * Math.min(l, 1 - l);
+        const f = (n: number) => {
+          const k = (n + h / 30) % 12;
+          const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+          return Math.round(255 * color).toString(16).padStart(2, '0');
+        };
+        return `#${f(0)}${f(8)}${f(4)}`;
+      };
+
+      const primary = hslToHex(getVar('--primary') || '345 82% 52%');
+      const primaryFg = hslToHex(getVar('--primary-foreground') || '0 0% 98%');
+      const cardBg = hslToHex(getVar('--card') || '240 4% 8%');
+      const headerStyle = `background:${primary}; color:${primaryFg}; font-weight:700;`;
+      const rowStyle = `background:${cardBg};`;
+
+      const headers = Object.keys(rows[0]);
+      let html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Timeline Export</title></head><body>`;
+      html += `<table border="1" style="border-collapse:collapse; font-family: Arial, Helvetica, sans-serif;">`;
+      // header
+      html += '<tr>';
+      for (const h of headers) {
+        html += `<th style="padding:8px; ${headerStyle}">${h}</th>`;
+      }
+      html += '</tr>';
+
+      // rows
+      rows.forEach((r, idx) => {
+        const striped = idx % 2 === 0;
+        html += '<tr>';
+        for (const h of headers) {
+          const v = (r as any)[h] ?? '';
+          const style = `padding:6px; ${striped ? rowStyle : ''}`;
+          html += `<td style="${style}">${v}</td>`;
+        }
+        html += '</tr>';
+      });
+
+      html += '</table></body></html>';
+
+      const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'timeline-colored.xls';
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error('Export colored failed', e);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-content-background p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold">Timeline</h1>
           <div className="flex items-center gap-3">
-            <button className="btn" aria-label="Share">Share</button>
-            <button onClick={exportCSV} className="btn btn-primary" aria-label="Export CSV">Export CSV</button>
+            <button onClick={handleShare} className="btn flex items-center gap-2" aria-label="Share">
+              <Share2 className="w-4 h-4" />
+              <span>Share</span>
+            </button>
+            <button onClick={exportCSV} className="btn btn-primary flex items-center gap-2" aria-label="Download CSV">
+              <Download className="w-4 h-4" />
+              <span>Download CSV</span>
+            </button>
           </div>
         </div>
 
