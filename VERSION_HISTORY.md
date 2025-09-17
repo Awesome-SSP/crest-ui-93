@@ -3,7 +3,13 @@
 This file captures the major edits made during the current development
 cycle. Use semantic versioning for future releases (e.g., `v0.1.0`).
 
-## v0.1.1 - 2025-09-17 (current)
+## v0.1.2 - 2025-09-17
+
+- Add cross-platform production serve script (`scripts/serve-prod.mjs`) and
+  update `package.json` to use `npm run serve:prod` (works on Windows/PowerShell).
+- Documentation updates: `README.md`, `IMPLEMENTATION.md`, and `SECURITY.md`.
+
+## v0.1.1 - 2025-09-17 (previous)
 
 - Implemented Timeline dashboard page with:
   - KPI row, animated phase cards, Recharts LineChart

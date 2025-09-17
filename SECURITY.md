@@ -36,3 +36,6 @@ Quick steps to harden this app (developer checklist):
 If you want, I can:
 - Add a small example server (Express) that demonstrates secure auth endpoints and proxies external APIs.
 - Add a CI step that scans for accidental secrets in commits (git-secrets, truffleHog).
+
+Note about serving production builds
+- This repository includes a lightweight Node-based static server (`scripts/serve-prod.mjs`) used by `npm run serve:prod` for local testing. It is intended for local preview and not a hardened production web server. For production deployments, prefer a vetted static host or reverse proxy (nginx, IIS, cloud provider) and enable HTTPS, HSTS, and access controls.

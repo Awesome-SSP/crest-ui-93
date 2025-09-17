@@ -1,3 +1,14 @@
+# crest-ui-93
+Quick links
+Run locally
+You need Node.js & npm installed (recommend using nvm).
+```powershell
+# 4. Start dev server (default http://localhost:5173)
+Live demo
+Serving production build
+```powershell
+This uses a small Node-based static server (`scripts/serve-prod.mjs`) which
+works on Windows, macOS, and Linux without relying on shell-specific syntax.
 
 # crest-ui-93
 

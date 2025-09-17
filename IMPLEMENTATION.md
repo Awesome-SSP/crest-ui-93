@@ -58,6 +58,10 @@ contributors understand the structure and quickly locate relevant code.
 ## Development Notes
 
 - Run locally: `npm install` then `npm run dev` (Vite dev server).
+- Default dev server port: Vite runs on port 5173 by default; use `VITE_PORT` or
+  set `PORT` when running the production preview with `npm run serve:prod`.
+- Production preview: `npm run build` then `npm run serve:prod` uses the
+  included `scripts/serve-prod.mjs` for cross-platform local serving of `dist`.
 - Static checks and TypeScript type checking should be run as part of your
   CI pipeline. The repo uses lightweight helper types; adjust strictness in
   `tsconfig` if needed.

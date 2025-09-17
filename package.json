@@ -1,7 +1,7 @@
 {
   "name": "pipe-ui",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "serve:prod": "npx serve -s dist -l $PORT || npx http-server ./dist -p $PORT"
+    "serve:prod": "node ./scripts/serve-prod.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
