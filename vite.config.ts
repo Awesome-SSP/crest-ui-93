@@ -9,11 +9,14 @@ export default defineConfig(({ mode }) => {
 
   return {
     server: {
-      host: "::",
-      port: 8080,
+      host: process.env.HOST || "0.0.0.0",
+      port: Number(process.env.PORT || 8080),
       hmr: {
         overlay: false,
       },
+      // If you want Vite to fail when the port is already in use (instead of
+      // switching to a different port), set strictPort to true. Default is false.
+      strictPort: false,
     },
 
     // Keep the React SWC plugin (fast) - no extra dev-only plugins added
@@ -29,6 +32,7 @@ export default defineConfig(({ mode }) => {
         "d3-scale",
         "lucide-react",
         "framer-motion",
+       
       ],
       esbuildOptions: {
         target: "es2020",
@@ -62,6 +66,9 @@ export default defineConfig(({ mode }) => {
       },
     },
 
-    logLevel: "warn",
+    // Show info-level logs so Vite prints the Local / Network URLs to the console
+    logLevel: "info",
+    // warn if not requried to show the urls
+    // logLevel: "warn",
   };
 });
