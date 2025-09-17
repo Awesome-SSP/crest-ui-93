@@ -1,3 +1,15 @@
+// use-toast.ts
+// ----------------
+// Lightweight global toast manager used across the app. Exposes two
+// convenient exports:
+// - useToast(): React hook that returns the current toasts array and helpers
+// - toast(): programmatic helper to create a toast from anywhere
+//
+// The implementation keeps an in-memory list of toast objects and notifies
+// all listeners (via a simple listener array) when the state changes. This
+// avoids the need for a heavy-weight state manager while keeping global
+// toast behavior predictable and testable.
+
 import * as React from "react";
 
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";

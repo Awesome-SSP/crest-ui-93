@@ -1,3 +1,10 @@
+// toast.tsx
+// ----------------
+// Small wrapper around Radix Toast primitives that provides a consistent
+// visual style for notifications across the app. Exports the provider,
+// viewport and composed toast pieces used by `Toaster` and programmatic
+// calls to `toast()` from `use-toast`.
+
 import * as React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -5,6 +12,8 @@ import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+// Provider that should wrap toast usage. Used in the Toaster component so
+// that calls to `toast()` render inside the application's toast viewport.
 const ToastProvider = ToastPrimitives.Provider;
 
 const ToastViewport = React.forwardRef<

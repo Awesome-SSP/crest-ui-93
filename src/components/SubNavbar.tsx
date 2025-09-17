@@ -90,7 +90,7 @@ const SubNavbar = ({ section = "dashboard" }: SubNavbarProps) => {
   const SectionIcon = getSectionIcon(section);
 
   return (
-    <motion.div 
+    <motion.div
       className="bg-sub-navbar border-b border-sub-navbar-border shadow-sm"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -104,10 +104,10 @@ const SubNavbar = ({ section = "dashboard" }: SubNavbarProps) => {
               <Filter className="w-4 h-4" />
               <span className="text-sm font-medium">Filters:</span>
             </div>
-            
+
             <div className="flex items-center space-x-3 flex-wrap gap-y-2">
               {filterItems.map((filter) => (
-                <motion.div 
+                <motion.div
                   key={filter.label}
                   className="flex items-center space-x-2"
                   whileHover={{ scale: 1.02 }}
@@ -132,18 +132,7 @@ const SubNavbar = ({ section = "dashboard" }: SubNavbarProps) => {
             </div>
           </div>
 
-          {/* Breadcrumb */}
-          <div className="hidden lg:flex items-center space-x-2 text-sub-navbar-foreground/70">
-            <div className="flex items-center space-x-2">
-              <Home className="w-4 h-4" />
-              <span className="text-sm">Home</span>
-            </div>
-            <span className="text-xs">/</span>
-            <div className="flex items-center space-x-2">
-              <SectionIcon className="w-4 h-4 text-primary" />
-              <span className="text-sm text-primary capitalize">{section}</span>
-            </div>
-          </div>
+          {/* breadcrumb removed - use universal breadcrumb in Layout */}
         </div>
       </div>
     </motion.div>

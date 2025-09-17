@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { TrendingDown, DollarSign, Percent, Calendar, Home } from "lucide-react";
+import { TrendingDown, DollarSign, Percent, Calendar } from "lucide-react";
 import ChartCard from "@/components/ChartCard";
 import StatsCard from "@/components/StatsCard";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -55,165 +55,156 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 const Liquidation = () => {
   return (
     <div className="min-h-screen bg-content-background">
-      {/* Breadcrumb */}
-      <div className="px-6 py-4 border-b border-border">
-        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-          <Home className="w-4 h-4" />
-          <span>Home</span>
-          <span>/</span>
-          <span className="text-foreground">Liquidation</span>
-        </div>
-      </div>
-      
+
       <div className="px-6 py-8">
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <StatsCard
-              title="Total Liquidated"
-              value="$4.2M"
-              change="+18.5% from last month"
-              changeType="positive"
-              icon={DollarSign}
-              delay={0.1}
-            />
-            <StatsCard
-              title="Success Rate"
-              value="77.3%"
-              change="+2.1% from last month"
-              changeType="positive"
-              icon={Percent}
-              delay={0.2}
-            />
-            <StatsCard
-              title="Active Payers"
-              value="175"
-              change="+7 from last month"
-              changeType="positive"
-              icon={TrendingDown}
-              delay={0.3}
-            />
-            <StatsCard
-              title="Avg Settlement Time"
-              value="42 days"
-              change="-3 days from last month"
-              changeType="positive"
-              icon={Calendar}
-              delay={0.4}
-            />
-          </div>
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <StatsCard
+            title="Total Liquidated"
+            value="$4.2M"
+            change="+18.5% from last month"
+            changeType="positive"
+            icon={DollarSign}
+            delay={0.1}
+          />
+          <StatsCard
+            title="Success Rate"
+            value="77.3%"
+            change="+2.1% from last month"
+            changeType="positive"
+            icon={Percent}
+            delay={0.2}
+          />
+          <StatsCard
+            title="Active Payers"
+            value="175"
+            change="+7 from last month"
+            changeType="positive"
+            icon={TrendingDown}
+            delay={0.3}
+          />
+          <StatsCard
+            title="Avg Settlement Time"
+            value="42 days"
+            change="-3 days from last month"
+            changeType="positive"
+            icon={Calendar}
+            delay={0.4}
+          />
+        </div>
 
-          {/* Top Charts */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
-            <ChartCard title="Payers Status" delay={0.5}>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={payersStatusData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis 
-                      dataKey="month" 
-                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                      tickLine={{ stroke: "hsl(var(--border))" }}
-                    />
-                    <YAxis 
-                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                      tickLine={{ stroke: "hsl(var(--border))" }}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend wrapperStyle={{ color: "hsl(var(--card-foreground))" }} />
-                    <Bar dataKey="active" fill="hsl(var(--chart-2))" radius={[2, 2, 0, 0]} name="Active" />
-                    <Bar dataKey="inactive" fill="hsl(var(--chart-1))" radius={[2, 2, 0, 0]} name="Inactive" />
-                    <Bar dataKey="pending" fill="hsl(var(--chart-3))" radius={[2, 2, 0, 0]} name="Pending" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </ChartCard>
-            
-            <ChartCard title="Liquidation Rates" delay={0.6}>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={liquidationRatesData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis 
-                      dataKey="month" 
-                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                      tickLine={{ stroke: "hsl(var(--border))" }}
-                    />
-                    <YAxis 
-                      domain={[60, 80]}
-                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                      tickLine={{ stroke: "hsl(var(--border))" }}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend wrapperStyle={{ color: "hsl(var(--card-foreground))" }} />
-                    <Line 
-                      type="monotone" 
-                      dataKey="rate" 
-                      stroke="hsl(var(--chart-2))" 
-                      strokeWidth={3}
-                      dot={{ fill: "hsl(var(--chart-2))", strokeWidth: 2, r: 4 }}
-                      name="Actual Rate (%)"
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="target" 
-                      stroke="hsl(var(--chart-1))" 
-                      strokeWidth={2}
-                      strokeDasharray="5 5"
-                      dot={{ fill: "hsl(var(--chart-1))", strokeWidth: 2, r: 3 }}
-                      name="Target Rate (%)"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </ChartCard>
-          </div>
+        {/* Top Charts */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
+          <ChartCard title="Payers Status" delay={0.5}>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={payersStatusData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                  <XAxis
+                    dataKey="month"
+                    tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+                    tickLine={{ stroke: "hsl(var(--border))" }}
+                  />
+                  <YAxis
+                    tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+                    tickLine={{ stroke: "hsl(var(--border))" }}
+                  />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend wrapperStyle={{ color: "hsl(var(--card-foreground))" }} />
+                  <Bar dataKey="active" fill="hsl(var(--chart-2))" radius={[2, 2, 0, 0]} name="Active" />
+                  <Bar dataKey="inactive" fill="hsl(var(--chart-1))" radius={[2, 2, 0, 0]} name="Inactive" />
+                  <Bar dataKey="pending" fill="hsl(var(--chart-3))" radius={[2, 2, 0, 0]} name="Pending" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </ChartCard>
 
-          {/* Bottom Charts */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-            <ChartCard title="Settlement Ratio by Settlement Date" delay={0.7}>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={settlementByDateData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis 
-                      dataKey="date" 
-                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                      tickLine={{ stroke: "hsl(var(--border))" }}
-                    />
-                    <YAxis 
-                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                      tickLine={{ stroke: "hsl(var(--border))" }}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend wrapperStyle={{ color: "hsl(var(--card-foreground))" }} />
-                    <Bar dataKey="full" fill="hsl(var(--chart-2))" radius={[2, 2, 0, 0]} name="Full Settlement" />
-                    <Bar dataKey="partial" fill="hsl(var(--chart-3))" radius={[2, 2, 0, 0]} name="Partial Settlement" />
-                    <Bar dataKey="none" fill="hsl(var(--chart-1))" radius={[2, 2, 0, 0]} name="No Settlement" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </ChartCard>
-            
-            <ChartCard title="Settlement Ratio by Placement Date" delay={0.8}>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={settlementByPlacementData} layout="horizontal">
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
-                    <YAxis type="category" dataKey="placement" tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend wrapperStyle={{ color: "hsl(var(--card-foreground))" }} />
-                    <Bar dataKey="success" fill="hsl(var(--chart-2))" name="Success Rate (%)" />
-                    <Bar dataKey="partial" fill="hsl(var(--chart-3))" name="Partial Rate (%)" />
-                    <Bar dataKey="failed" fill="hsl(var(--chart-1))" name="Failed Rate (%)" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </ChartCard>
-          </div>
+          <ChartCard title="Liquidation Rates" delay={0.6}>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={liquidationRatesData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                  <XAxis
+                    dataKey="month"
+                    tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+                    tickLine={{ stroke: "hsl(var(--border))" }}
+                  />
+                  <YAxis
+                    domain={[60, 80]}
+                    tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+                    tickLine={{ stroke: "hsl(var(--border))" }}
+                  />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend wrapperStyle={{ color: "hsl(var(--card-foreground))" }} />
+                  <Line
+                    type="monotone"
+                    dataKey="rate"
+                    stroke="hsl(var(--chart-2))"
+                    strokeWidth={3}
+                    dot={{ fill: "hsl(var(--chart-2))", strokeWidth: 2, r: 4 }}
+                    name="Actual Rate (%)"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="target"
+                    stroke="hsl(var(--chart-1))"
+                    strokeWidth={2}
+                    strokeDasharray="5 5"
+                    dot={{ fill: "hsl(var(--chart-1))", strokeWidth: 2, r: 3 }}
+                    name="Target Rate (%)"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </ChartCard>
+        </div>
+
+        {/* Bottom Charts */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          <ChartCard title="Settlement Ratio by Settlement Date" delay={0.7}>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={settlementByDateData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                  <XAxis
+                    dataKey="date"
+                    tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+                    tickLine={{ stroke: "hsl(var(--border))" }}
+                  />
+                  <YAxis
+                    tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+                    tickLine={{ stroke: "hsl(var(--border))" }}
+                  />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend wrapperStyle={{ color: "hsl(var(--card-foreground))" }} />
+                  <Bar dataKey="full" fill="hsl(var(--chart-2))" radius={[2, 2, 0, 0]} name="Full Settlement" />
+                  <Bar dataKey="partial" fill="hsl(var(--chart-3))" radius={[2, 2, 0, 0]} name="Partial Settlement" />
+                  <Bar dataKey="none" fill="hsl(var(--chart-1))" radius={[2, 2, 0, 0]} name="No Settlement" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </ChartCard>
+
+          <ChartCard title="Settlement Ratio by Placement Date" delay={0.8}>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={settlementByPlacementData} layout="horizontal">
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                  <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
+                  <YAxis type="category" dataKey="placement" tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend wrapperStyle={{ color: "hsl(var(--card-foreground))" }} />
+                  <Bar dataKey="success" fill="hsl(var(--chart-2))" name="Success Rate (%)" />
+                  <Bar dataKey="partial" fill="hsl(var(--chart-3))" name="Partial Rate (%)" />
+                  <Bar dataKey="failed" fill="hsl(var(--chart-1))" name="Failed Rate (%)" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </ChartCard>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default Liquidation;

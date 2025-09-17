@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { DollarSign, TrendingUp, TrendingDown, Users, Target, BarChart3, Home } from "lucide-react";
+import { DollarSign, TrendingUp, TrendingDown, Users, Target, BarChart3 } from "lucide-react";
 import ChartCard from "@/components/ChartCard";
 import StatsCard from "@/components/StatsCard";
 import PaymentsByBucketChart from "@/components/PaymentsByBucketChart";
@@ -8,16 +8,7 @@ import CostsCollectionsChart from "@/components/CostsCollectionsChart";
 const Index = () => {
   return (
     <div className="min-h-screen bg-content-background">
-      {/* Breadcrumb */}
-      <div className="px-6 py-4 border-b border-border">
-        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-          <Home className="w-4 h-4" />
-          <span>Home</span>
-          <span>/</span>
-          <span className="text-foreground">Dashboard</span>
-        </div>
-      </div>
-      
+
       <div className="px-6 py-8">
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -60,7 +51,7 @@ const Index = () => {
           <ChartCard title="Payments by Bucket" delay={0.5}>
             <PaymentsByBucketChart />
           </ChartCard>
-          
+
           <ChartCard title="Costs & Collections" delay={0.6}>
             <CostsCollectionsChart />
           </ChartCard>
@@ -76,7 +67,7 @@ const Index = () => {
               </div>
             </div>
           </ChartCard>
-          
+
           <ChartCard title="Top Performing States" delay={0.8}>
             <div className="space-y-4">
               {[
@@ -86,7 +77,7 @@ const Index = () => {
                 { state: "Florida", amount: "$398K", percentage: "15%" },
                 { state: "Illinois", amount: "$267K", percentage: "10%" },
               ].map((item, index) => (
-                <motion.div 
+                <motion.div
                   key={item.state}
                   className="flex items-center justify-between p-3 bg-muted/20 rounded-lg"
                   initial={{ opacity: 0, x: -20 }}

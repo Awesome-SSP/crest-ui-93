@@ -3,6 +3,23 @@ import { Download, Edit, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+/**
+ * ChartCard
+ * ----------
+ * Small wrapper component used to present a chart with a header and action
+ * buttons (download, edit, list). This component applies a subtle entrance
+ * animation and hover lift.
+ *
+ * Props:
+ * - title: the card title shown in the header
+ * - children: chart or arbitrary content
+ * - delay: animation delay in seconds
+ * - className: additional class names applied to the root container
+ *
+ * TODO: If you replace inline demo charts with data-driven charts, accept
+ * an optional `data` prop and a `onDownload` callback.
+ */
+
 interface ChartCardProps {
   title: string;
   children: React.ReactNode;
