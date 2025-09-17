@@ -33,6 +33,17 @@ npm install
 npm run dev
 ```
 
+Environment
+ - The client will use `import.meta.env.VITE_API_URL` when set. For local development you can set it in a `.env` file at the project root, for example:
+
+```text
+# .env
+VITE_API_URL=http://localhost:3000
+```
+
+Security
+ - See `SECURITY.md` for important guidance on how to avoid exposing secrets or sensitive endpoints from the client.
+
 What you get
  - Interactive Recharts visualizations (line/area/pie)
  - US choropleth maps (react-simple-maps)
@@ -47,6 +58,22 @@ Contributing
  - Replace inline sample data (TODO markers in files) with API calls or
 	 wire the pages to your backend.
  - Add unit tests for chart renderers and utility functions.
+
+Local secure backend example
+ - This repo includes a minimal example server under `examples/secure-proxy` that
+	 demonstrates a safer pattern: the server sets an httpOnly cookie and exposes
+	 an authenticated `/api/status` endpoint. Run it with:
+
+```powershell
+cd examples/secure-proxy
+npm install
+node server.js
+```
+
+Using the client API wrapper
+ - The frontend includes `src/lib/api.ts` which centralizes API calls and reads
+	 the base URL from `VITE_API_URL`. Update `.env` with `VITE_API_URL=http://localhost:3000` to test against
+	 the example server.
 
 License & credits
  - Project uses standard open-source libraries (Recharts, react-simple-maps,
