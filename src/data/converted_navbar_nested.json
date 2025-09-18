@@ -1,0 +1,228 @@
+{
+    "main": [
+        {
+            "name": "Dashboard",
+            "path": "/dashboard",
+            "dropdown": [
+                {
+                    "label": "Dollars",
+                    "path": "/dollars"
+                },
+                {
+                    "label": "Liquidation",
+                    "path": "/liquidation"
+                },
+                {
+                    "label": "Heat-Maps",
+                    "path": "/heat-maps"
+                },
+                {
+                    "label": "Inv Chart Batches",
+                    "path": "/inv-chart-batches"
+                },
+                {
+                    "label": "Inventory",
+                    "path": "/inventory"
+                },
+                {
+                    "label": "Judgement Performance",
+                    "path": "/judgement-performance"
+                },
+                {
+                    "label": "Timeline",
+                    "path": "/timeline"
+                }
+            ]
+        },
+        {
+            "name": "Report",
+            "path": "/report"
+        },
+        {
+            "name": "FAQ",
+            "path": "/faq"
+        },
+        {
+            "name": "State Issues",
+            "path": "/state-issues",
+            "dropdown": [
+                {
+                    "label": "View State",
+                    "path": "/view-state"
+                }
+            ]
+        },
+        {
+            "name": "Client Guide",
+            "path": "/client-guide",
+            "dropdown": [
+                {
+                    "label": "ViewEdits",
+                    "path": "/viewedits"
+                },
+                {
+                    "label": "View Client Guide",
+                    "path": "/view-client-guide"
+                }
+            ]
+        },
+        {
+            "name": "Schedule Batch Report",
+            "path": "/schedule-batch-report",
+            "dropdown": [
+                {
+                    "label": "Manual report Run",
+                    "path": "/manual-report-run"
+                },
+                {
+                    "label": "SFTP Details",
+                    "path": "/sftp-details"
+                },
+                {
+                    "label": "View Query Report",
+                    "path": "/view-query-report"
+                },
+                {
+                    "label": "View Scheduled Report",
+                    "path": "/view-scheduled-report"
+                },
+                {
+                    "label": "Schedular Logs",
+                    "path": "/schedular-logs"
+                }
+            ]
+        },
+        {
+            "name": "Document Transfer",
+            "path": "/document-transfer",
+            "dropdown": [
+                {
+                    "label": "My uploads",
+                    "path": "/my-uploads"
+                },
+                {
+                    "label": "my Downloads",
+                    "path": "/my-downloads"
+                },
+                {
+                    "label": "Company Upload/Download",
+                    "path": "/company-uploaddownload"
+                }
+            ]
+        },
+        {
+            "name": "Administration",
+            "path": "/administration",
+            "dropdown": [
+                {
+                    "label": "Manage State Issuess",
+                    "path": "/manage-state-issuess"
+                },
+                {
+                    "label": "document Request Log",
+                    "path": "/document-request-log"
+                },
+                {
+                    "label": "Manage Settlements",
+                    "path": "/manage-settlements"
+                },
+                {
+                    "label": "Manage FAQ",
+                    "path": "/manage-faq"
+                },
+                {
+                    "label": "Manage Notice",
+                    "path": "/manage-notice"
+                },
+                {
+                    "label": "Manage Company",
+                    "path": "/manage-company",
+                    "dropdown": [
+                        {
+                            "label": "Company Register",
+                            "path": "/company-register"
+                        },
+                        {
+                            "label": "View Bill of Sale",
+                            "path": "/view-bill-of-sale"
+                        },
+                        {
+                            "label": "View License Matrix",
+                            "path": "/view-license-matrix"
+                        },
+                        {
+                            "label": "Add Company",
+                            "path": "/add-company"
+                        }
+                    ]
+                },
+                {
+                    "label": "Manage Contact",
+                    "path": "/manage-contact",
+                    "dropdown": [
+                        {
+                            "label": "Add Contact",
+                            "path": "/add-contact"
+                        },
+                        {
+                            "label": "Manage User",
+                            "path": "/manage-user"
+                        },
+                        {
+                            "label": "View Contact",
+                            "path": "/view-contact"
+                        }
+                    ]
+                },
+                {
+                    "label": "Control File",
+                    "path": "/control-file",
+                    "dropdown": [
+                        {
+                            "label": "SIF Form Control",
+                            "path": "/sif-form-control",
+                            "dropdown": [
+                                {
+                                    "label": "Manage Email Content",
+                                    "path": "/manage-email-content"
+                                },
+                                {
+                                    "label": "Manage SIF Parameters",
+                                    "path": "/manage-sif-parameters"
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Client Guide Text",
+                            "path": "/client-guide-text"
+                        },
+                        {
+                            "label": "Media Scrub",
+                            "path": "/media-scrub"
+                        }
+                    ]
+                },
+                {
+                    "label": "Client Onboarding",
+                    "path": "/client-onboarding",
+                    "dropdown": [
+                        {
+                            "label": "Client Status",
+                            "path": "/client-status"
+                        }
+                    ]
+                },
+                {
+                    "label": "Invoicing Tool",
+                    "path": "/invoicing-tool",
+                    "dropdown": [
+                        {
+                            "label": "Report",
+                            "path": "/report"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
