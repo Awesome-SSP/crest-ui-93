@@ -1,5 +1,14 @@
 import * as React from "react";
-import * as RechartsPrimitive from "recharts";
+// Recharts is a relatively large dependency. Import it dynamically so it
+// only becomes part of the bundle when a chart actually mounts.
+let RechartsPrimitive: typeof import("recharts") | null = null;
+
+async function loadRecharts() {
+  if (!RechartsPrimitive) {
+    RechartsPrimitive = await import("recharts");
+  }
+  return RechartsPrimitive;
+}
 
 import { cn } from "@/lib/utils";
 
@@ -51,7 +60,10 @@ const ChartContainer = React.forwardRef<
         {...props}
       >
         <ChartStyle id={chartId} config={config} />
-        <RechartsPrimitive.ResponsiveContainer>{children}</RechartsPrimitive.ResponsiveContainer>
+        {/* Render children only after recharts is loaded */}
+        <React.Suspense fallback={<div className="w-full h-full" />}> 
+          <ChartRechartsLoader>{children}</ChartRechartsLoader>
+        </React.Suspense>
       </div>
     </ChartContext.Provider>
   );

@@ -2,8 +2,11 @@ import { motion } from "framer-motion";
 import { DollarSign, TrendingUp, TrendingDown, Users, Target, BarChart3 } from "lucide-react";
 import ChartCard from "@/components/ChartCard";
 import StatsCard from "@/components/StatsCard";
-import PaymentsByBucketChart from "@/components/PaymentsByBucketChart";
-import CostsCollectionsChart from "@/components/CostsCollectionsChart";
+import React, { Suspense, lazy } from "react";
+
+// Lazy load heavy chart - reduces initial bundle size
+const PaymentsByBucketChart = lazy(() => import("@/components/PaymentsByBucketChart"));
+const CostsCollectionsChart = lazy(() => import("@/components/CostsCollectionsChart"));
 
 const Index = () => {
   return (
@@ -49,11 +52,15 @@ const Index = () => {
         {/* Charts Grid */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
           <ChartCard title="Payments by Bucket" delay={0.5}>
-            <PaymentsByBucketChart />
+            <Suspense fallback={<div className="h-80 animate-pulse bg-muted/20 rounded" /> }>
+              <PaymentsByBucketChart />
+            </Suspense>
           </ChartCard>
 
           <ChartCard title="Costs & Collections" delay={0.6}>
-            <CostsCollectionsChart />
+            <Suspense fallback={<div className="h-80 animate-pulse bg-muted/20 rounded" /> }>
+              <CostsCollectionsChart />
+            </Suspense>
           </ChartCard>
         </div>
 
