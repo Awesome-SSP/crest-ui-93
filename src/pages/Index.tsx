@@ -52,13 +52,13 @@ const Index = () => {
         {/* Charts Grid */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
           <ChartCard title="Payments by Bucket" delay={0.5}>
-            <Suspense fallback={<div className="h-80 animate-pulse bg-muted/20 rounded" /> }>
+            <Suspense fallback={<div className="h-80 animate-pulse bg-muted/20 rounded" />}>
               <PaymentsByBucketChart />
             </Suspense>
           </ChartCard>
 
           <ChartCard title="Costs & Collections" delay={0.6}>
-            <Suspense fallback={<div className="h-80 animate-pulse bg-muted/20 rounded" /> }>
+            <Suspense fallback={<div className="h-80 animate-pulse bg-muted/20 rounded" />}>
               <CostsCollectionsChart />
             </Suspense>
           </ChartCard>
