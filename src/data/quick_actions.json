@@ -1,0 +1,23 @@
+{
+  "actions": [
+    {
+      "label": "Profile",
+      "path": "/profile"
+    },
+    {
+      "label": "Settings",
+      "path": "/settings"
+    },
+    {
+      "label": "Notifications",
+      "path": "/notifications"
+    },
+    {
+      "type": "separator"
+    },
+    {
+      "label": "Sign out",
+      "path": "/signout"
+    }
+  ]
+}
