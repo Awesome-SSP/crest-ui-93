@@ -84,7 +84,7 @@ const NavItem: React.FC<{ item: any; level?: number; mobile?: boolean; rootIsLig
                     else if (item.path) navigate(item.path);
                 }}
                 onMouseEnter={() => hasChildren && openWithCancel()}
-                className={`flex items-center gap-2 px-2 py-0.5 rounded-sm font-semibold transition-all duration-150 transform text-sm ${isActive(item.path) ? activeClass : textClass}`}
+                className={`flex items-center gap-2 px-2 py-0.5 rounded-sm font-semibold transition-all duration-150 transform text-sm w-full justify-center text-center ${isActive(item.path) ? activeClass : textClass}`}
                 aria-expanded={hasChildren ? open : undefined}
             >
                 <span className="whitespace-nowrap max-w-[10rem] truncate uppercase text-xs tracking-wide">{item.name || item.label}</span>
@@ -93,7 +93,9 @@ const NavItem: React.FC<{ item: any; level?: number; mobile?: boolean; rootIsLig
 
             {hasChildren && (
                 <div
-                    className={`absolute left-0 mt-1 z-50 w-56 rounded-lg shadow-lg ${level > 0 ? 'translate-x-full -left-2 top-0 w-52' : ''}`}
+                    className={
+                        `absolute mt-1 z-50 w-56 rounded-lg shadow-lg ${level > 0 ? 'translate-x-full -left-2 top-0 w-52' : 'left-1/2 -translate-x-1/2'}`
+                    }
                     style={dropdownStyle}
                     onMouseEnter={() => openWithCancel()}
                     onMouseLeave={() => closeWithDelay()}
@@ -196,9 +198,9 @@ const NavbarNested: React.FC = () => {
                             <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12h18M3 6h18M3 18h18" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                         </div>
                         <span className="text-base md:text-lg font-bold tracking-tight">Pipeway</span>
-                        <div className="hidden md:flex items-center gap-2 ml-4 flex-wrap max-w-[60vw] md:max-w-[50vw]">
+                        <div className="hidden md:flex items-center gap-2 ml-4 flex-1 max-w-[60vw] md:max-w-[50vw]">
                             {data.map((item: any) => (
-                                <div key={item.name} className="relative">
+                                <div key={item.name} className="relative flex-1">
                                     <NavItem item={item} rootIsLight={rootIsLight} />
                                 </div>
                             ))}
