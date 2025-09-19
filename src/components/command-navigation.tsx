@@ -291,7 +291,7 @@ export function CommandNavigation({ isOpen, onClose }: CommandNavigationProps) {
             >
               <span>{key}</span>
               {(Array.isArray(value) && value.length > 0) ||
-              (typeof value === "object" && Object.keys(value).length > 0) ? (
+                (typeof value === "object" && Object.keys(value).length > 0) ? (
                 <Badge variant="secondary" className="ml-2">
                   {Array.isArray(value) ? value.length : Object.keys(value).length}
                 </Badge>
