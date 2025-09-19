@@ -2,8 +2,13 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { sendPageTelemetry } from "./lib/telemetry";
+import { ThemeProvider } from "./components/theme-provider";
 
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(
+    <ThemeProvider>
+        <App />
+    </ThemeProvider>,
+);
 
 // send a telemetry ping in dev to capture load metrics
 // call telemetry after the page has loaded to ensure performance entries exist
