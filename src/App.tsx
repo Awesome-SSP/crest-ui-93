@@ -52,7 +52,7 @@ const App = () => (
               <Route path="/client-guide" element={<ClientGuide />} />
               <Route path="/schedule-batch-report" element={<ScheduleBatchReport />} />
               <Route path="/document-transfer" element={<DocumentTransfer />} />
-              <Route path="/administration" element={<Administration />} />
+              <Route path="/administration/*" element={<Administration />} />
               <Route path="/judgment-performance" element={<JudgmentPerformance />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

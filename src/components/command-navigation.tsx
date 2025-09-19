@@ -22,6 +22,7 @@ import {
   Command,
 } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useNavigate } from "react-router-dom"
 
 // Menu data structure based on the uploaded image
 const menuData = {
@@ -98,6 +99,7 @@ interface CommandNavigationProps {
 }
 
 export function CommandNavigation({ isOpen, onClose }: CommandNavigationProps) {
+  const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPath, setCurrentPath] = useState<string[]>([])
   const [filteredItems, setFilteredItems] = useState<any[]>([])
@@ -158,8 +160,51 @@ export function CommandNavigation({ isOpen, onClose }: CommandNavigationProps) {
 
   const handleItemClick = (item: any) => {
     if (item.type === "item") {
-      // Navigate to the item
-      console.log(`[v0] Navigating to: ${item.path.join(" > ")}`)
+      // Build a kebab-cased route from the path and navigate
+      const nameToRoute = (parts: string[]) => {
+        // Known overrides for special names
+        const overrides: Record<string, string> = {
+          "Dollars": "/dollars",
+          "Liquidation": "/liquidation",
+          "Heat-Maps": "/heatmaps",
+          "Inv Chart Batches": "/inv-chart-batches",
+          "Inventory": "/inventory",
+          "Judgement Performance": "/judgment-performance",
+          "Timeline": "/timeline",
+          "Schedule Batch Report": "/schedule-batch-report",
+          "Document Transfer": "/document-transfer",
+          "State Issues": "/state-issues",
+          "Client Guide": "/client-guide",
+          "Reports": "/reports",
+        }
+
+        // If the final part matches an override, return that
+        const final = parts[parts.length - 1]
+        if (overrides[final]) return overrides[final]
+
+        // Otherwise build a kebab-cased path from the full parts
+        const kebab = parts
+          .map((p) =>
+            p
+              .replace(/\s+/g, "-")
+              .replace(/[^a-zA-Z0-9\-]/g, "")
+              .replace(/--+/g, "-")
+              .toLowerCase(),
+          )
+          .join("/")
+
+        // Prepend with a leading slash. If it starts with administration, keep it under /administration
+        if (kebab.startsWith("administration")) return `/${kebab}`
+        return `/${kebab}`
+      }
+
+      const route = nameToRoute(item.path)
+      try {
+        navigate(route)
+      } catch (e) {
+        // fallback: close dialog and log
+        console.warn("Navigation failed", e)
+      }
       onClose()
     } else {
       setCurrentPath(item.path)
