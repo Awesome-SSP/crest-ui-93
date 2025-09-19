@@ -11,7 +11,7 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="flex flex-col min-h-screen w-full bg-background">
-  <Header />
+      <Header />
       <Breadcrumb />
       <main className="flex-1 overflow-auto bg-content-background">
         {children}
