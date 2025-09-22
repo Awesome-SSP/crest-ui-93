@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { BarChart3, PieChart, Users, CheckCircle, Clock, AlertCircle } from "lucide-react";
-import ChartCard from "@/components/ChartCard";
-import StatsCard from "@/components/StatsCard";
+import ChartCard from "@/features/dashboard/components/ChartCard";
+import StatsCard from "@/features/dashboard/components/StatsCard";
 import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
 const activeClaimsData = [

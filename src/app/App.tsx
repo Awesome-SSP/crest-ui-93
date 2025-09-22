@@ -3,28 +3,28 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout";
-import Loading from "@/components/Loading";
+import Layout from "@/components/layout/Layout";
+import Loading from "@/components/common/Loading";
 import React, { Suspense, lazy } from "react";
 
 // Route-level code splitting: lazy load pages so initial bundle is small
-const Index = lazy(() => import("./pages/Index"));
-const Dollars = lazy(() => import("./pages/Dollars"));
-const Liquidation = lazy(() => import("./pages/Liquidation"));
-const HeatMaps = lazy(() => import("./pages/HeatMaps"));
-const Inventory = lazy(() => import("./pages/Inventory"));
-const InvChartBatches = lazy(() => import("./pages/InvChartBatches"));
-const Timeline = lazy(() => import("./pages/Timeline"));
-const Reports = lazy(() => import("./pages/Reports"));
-const FAQ = lazy(() => import("./pages/FAQ"));
-const Notices = lazy(() => import("./pages/Notices"));
-const StateIssues = lazy(() => import("./pages/StateIssues"));
-const ClientGuide = lazy(() => import("./pages/ClientGuide"));
-const ScheduleBatchReport = lazy(() => import("./pages/ScheduleBatchReport"));
-const DocumentTransfer = lazy(() => import("./pages/DocumentTransfer"));
-const Administration = lazy(() => import("./pages/Administration"));
-const JudgmentPerformance = lazy(() => import("./pages/JudgmentPerformance"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const Index = lazy(() => import("@/features/dashboard/pages/Index"));
+const Dollars = lazy(() => import("@/features/financial/pages/Dollars"));
+const Liquidation = lazy(() => import("@/features/financial/pages/Liquidation"));
+const HeatMaps = lazy(() => import("@/features/dashboard/pages/HeatMaps"));
+const Inventory = lazy(() => import("@/features/inventory/pages/Inventory"));
+const InvChartBatches = lazy(() => import("@/features/inventory/pages/InvChartBatches"));
+const Timeline = lazy(() => import("@/features/reports/pages/Timeline"));
+const Reports = lazy(() => import("@/features/reports/pages/Reports"));
+const FAQ = lazy(() => import("@/features/support/pages/FAQ"));
+const Notices = lazy(() => import("@/features/support/pages/Notices"));
+const StateIssues = lazy(() => import("@/features/shared/pages/StateIssues"));
+const ClientGuide = lazy(() => import("@/features/support/pages/ClientGuide"));
+const ScheduleBatchReport = lazy(() => import("@/features/reports/pages/ScheduleBatchReport"));
+const DocumentTransfer = lazy(() => import("@/features/shared/pages/DocumentTransfer"));
+const Administration = lazy(() => import("@/features/administration/pages/Administration"));
+const JudgmentPerformance = lazy(() => import("@/features/financial/pages/JudgmentPerformance"));
+const NotFound = lazy(() => import("@/features/shared/pages/NotFound"));
 
 const queryClient = new QueryClient();
 

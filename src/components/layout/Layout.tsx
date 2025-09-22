@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Header } from "./header";
 import NavBar from "./NavBar";
-import Breadcrumb from "./ui/breadcrumb";
+import Breadcrumb from "@/components/ui/breadcrumb";
 import { Footer } from "./footer";
 
 interface LayoutProps {

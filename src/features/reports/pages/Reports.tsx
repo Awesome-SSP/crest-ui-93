@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { FileText, BarChart3 } from "lucide-react";
-import ChartCard from "@/components/ChartCard";
+import ChartCard from "@/features/dashboard/components/ChartCard";
 
 const Reports = () => {
   useEffect(() => {

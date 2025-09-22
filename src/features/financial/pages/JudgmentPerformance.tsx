@@ -1,6 +1,6 @@
 import React from "react";
 import { ShieldCheck, Share2, Download } from "lucide-react";
-import ChartCard from "@/components/ChartCard";
+import ChartCard from "@/features/dashboard/components/ChartCard";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ReTooltip, ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell, Legend } from 'recharts';
 import { toast } from '@/hooks/use-toast';
 

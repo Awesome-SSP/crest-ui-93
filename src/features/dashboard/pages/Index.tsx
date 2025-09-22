@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 import { DollarSign, TrendingUp, TrendingDown, Users, Target, BarChart3 } from "lucide-react";
-import ChartCard from "@/components/ChartCard";
-import StatsCard from "@/components/StatsCard";
+import ChartCard from "@/features/dashboard/components/ChartCard";
+import StatsCard from "@/features/dashboard/components/StatsCard";
 import React, { Suspense, lazy } from "react";
 
 // Lazy load heavy chart - reduces initial bundle size
-const PaymentsByBucketChart = lazy(() => import("@/components/PaymentsByBucketChart"));
-const CostsCollectionsChart = lazy(() => import("@/components/CostsCollectionsChart"));
+const PaymentsByBucketChart = lazy(() => import("@/features/dashboard/charts/PaymentsByBucketChart"));
+const CostsCollectionsChart = lazy(() => import("@/features/dashboard/charts/CostsCollectionsChart"));
 
 const Index = () => {
   return (

@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X, User, Settings, LogOut, Bell, Command } from "lucide-react"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { CommandNavigation } from "@/components/command-navigation"
+import { ThemeToggle } from "@/components/common/theme-toggle"
+import { CommandNavigation } from "@/components/navigation/command-navigation"
 import {
   DropdownMenu,
   DropdownMenuContent,

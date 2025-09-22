@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { TrendingDown, DollarSign, Percent, Calendar } from "lucide-react";
-import ChartCard from "@/components/ChartCard";
-import StatsCard from "@/components/StatsCard";
+import ChartCard from "@/features/dashboard/components/ChartCard";
+import StatsCard from "@/features/dashboard/components/StatsCard";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 const payersStatusData = [
