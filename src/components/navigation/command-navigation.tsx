@@ -177,6 +177,14 @@ export function CommandNavigation({ isOpen, onClose }: CommandNavigationProps) {
           "Client Guide": "/client-guide",
           "Reports": "/reports",
           "Company Register": "/administration/manage-company/company-register",
+          "View Bill of Sale": "/administration/manage-company/view-bill-of-sale",
+          "View License Matrix": "/administration/manage-company/view-license-matrix",
+          "Add Company": "/administration/manage-company/add-company",
+          "Add Contact": "/administration/manage-contact/add-contact",
+          "View Contact": "/administration/manage-contact/view-contact",
+          "Manage User": "/administration/manage-contact/manage-user",
+          "Manage Email Content": "/administration/control-file/sif-form-control/manage-email-content",
+          "Manage SIF Parameters": "/administration/control-file/sif-form-control/manage-sif-parameters",
         }
 
         // If the final part matches an override, return that

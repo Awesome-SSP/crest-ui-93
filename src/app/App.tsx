@@ -24,6 +24,14 @@ const ScheduleBatchReport = lazy(() => import("@/features/reports/pages/Schedule
 const DocumentTransfer = lazy(() => import("@/features/shared/pages/DocumentTransfer"));
 const Administration = lazy(() => import("@/features/administration/pages/Administration"));
 const CompanyRegister = lazy(() => import("@/features/administration/pages/CompanyRegister"));
+const ViewBillOfSale = lazy(() => import("@/features/administration/pages/ViewBillOfSale"));
+const ViewLicenseMatrix = lazy(() => import("@/features/administration/pages/ViewLicenseMatrix"));
+const AddCompany = lazy(() => import("@/features/administration/pages/AddCompany"));
+const AddContact = lazy(() => import("@/features/administration/pages/AddContact"));
+const ViewContact = lazy(() => import("@/features/administration/pages/ViewContact"));
+const ManageUser = lazy(() => import("@/features/administration/pages/ManageUser"));
+const ManageEmailContent = lazy(() => import("@/features/administration/pages/ManageEmailContent"));
+const ManageSIFParameters = lazy(() => import("@/features/administration/pages/ManageSIFParameters"));
 const JudgmentPerformance = lazy(() => import("@/features/dashboard/pages/JudgmentPerformance"));
 const NotFound = lazy(() => import("@/features/shared/pages/NotFound"));
 
@@ -54,7 +62,15 @@ const App = () => (
               <Route path="/schedule-batch-report" element={<ScheduleBatchReport />} />
               <Route path="/document-transfer" element={<DocumentTransfer />} />
               <Route path="/administration/*" element={<Administration />} />
-              <Route path="/administration/manage-company/add-company" element={<CompanyRegister />} />
+              <Route path="/administration/manage-company/company-register" element={<CompanyRegister />} />
+              <Route path="/administration/manage-company/view-bill-of-sale" element={<ViewBillOfSale />} />
+              <Route path="/administration/manage-company/view-license-matrix" element={<ViewLicenseMatrix />} />
+              <Route path="/administration/manage-company/add-company" element={<AddCompany />} />
+              <Route path="/administration/manage-contact/add-contact" element={<AddContact />} />
+              <Route path="/administration/manage-contact/view-contact" element={<ViewContact />} />
+              <Route path="/administration/manage-contact/manage-user" element={<ManageUser />} />
+              <Route path="/administration/control-file/sif-form-control/manage-email-content" element={<ManageEmailContent />} />
+              <Route path="/administration/control-file/sif-form-control/manage-sif-parameters" element={<ManageSIFParameters />} />
               <Route path="/judgment-performance" element={<JudgmentPerformance />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
