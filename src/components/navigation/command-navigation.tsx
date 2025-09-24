@@ -176,6 +176,7 @@ export function CommandNavigation({ isOpen, onClose }: CommandNavigationProps) {
           "State Issues": "/state-issues",
           "Client Guide": "/client-guide",
           "Reports": "/reports",
+          "Company Register": "/administration/manage-company/company-register",
         }
 
         // If the final part matches an override, return that
@@ -268,7 +269,7 @@ export function CommandNavigation({ isOpen, onClose }: CommandNavigationProps) {
               key={index}
               variant="outline"
               className="justify-start h-12 hover:bg-accent bg-transparent"
-              onClick={() => console.log(`[v0] Navigating to: ${[...currentPath, item].join(" > ")}`)}
+              onClick={() => handleItemClick({ name: item, path: [...currentPath, item], type: "item" })}
             >
               <ChevronRight className="h-4 w-4 mr-2" />
               {item}

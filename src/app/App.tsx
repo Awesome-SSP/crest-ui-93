@@ -10,11 +10,11 @@ import React, { Suspense, lazy } from "react";
 // Route-level code splitting: lazy load pages so initial bundle is small
 const Index = lazy(() => import("@/features/dashboard/pages/Index"));
 const Dollars = lazy(() => import("@/features/financial/pages/Dollars"));
-const Liquidation = lazy(() => import("@/features/financial/pages/Liquidation"));
+const Liquidation = lazy(() => import("@/features/dashboard/pages/Liquidation"));
 const HeatMaps = lazy(() => import("@/features/dashboard/pages/HeatMaps"));
-const Inventory = lazy(() => import("@/features/inventory/pages/Inventory"));
-const InvChartBatches = lazy(() => import("@/features/inventory/pages/InvChartBatches"));
-const Timeline = lazy(() => import("@/features/reports/pages/Timeline"));
+const Inventory = lazy(() => import("@/features/dashboard/pages/Inventory"));
+const InvChartBatches = lazy(() => import("@/features/dashboard/pages/InvChartBatches"));
+const Timeline = lazy(() => import("@/features/dashboard/pages/Timeline"));
 const Reports = lazy(() => import("@/features/reports/pages/Reports"));
 const FAQ = lazy(() => import("@/features/support/pages/FAQ"));
 const Notices = lazy(() => import("@/features/support/pages/Notices"));
@@ -23,7 +23,8 @@ const ClientGuide = lazy(() => import("@/features/support/pages/ClientGuide"));
 const ScheduleBatchReport = lazy(() => import("@/features/reports/pages/ScheduleBatchReport"));
 const DocumentTransfer = lazy(() => import("@/features/shared/pages/DocumentTransfer"));
 const Administration = lazy(() => import("@/features/administration/pages/Administration"));
-const JudgmentPerformance = lazy(() => import("@/features/financial/pages/JudgmentPerformance"));
+const CompanyRegister = lazy(() => import("@/features/administration/pages/CompanyRegister"));
+const JudgmentPerformance = lazy(() => import("@/features/dashboard/pages/JudgmentPerformance"));
 const NotFound = lazy(() => import("@/features/shared/pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -53,6 +54,7 @@ const App = () => (
               <Route path="/schedule-batch-report" element={<ScheduleBatchReport />} />
               <Route path="/document-transfer" element={<DocumentTransfer />} />
               <Route path="/administration/*" element={<Administration />} />
+              <Route path="/administration/manage-company/add-company" element={<CompanyRegister />} />
               <Route path="/judgment-performance" element={<JudgmentPerformance />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
