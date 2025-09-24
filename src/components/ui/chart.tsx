@@ -1,5 +1,14 @@
 import * as React from "react";
-import * as RechartsPrimitive from "recharts";
+// Recharts is a relatively large dependency. Import it dynamically so it
+// only becomes part of the bundle when a chart actually mounts.
+let RechartsPrimitive: typeof import("recharts") | null = null;
+
+async function loadRecharts() {
+  if (!RechartsPrimitive) {
+    RechartsPrimitive = await import("recharts");
+  }
+  return RechartsPrimitive;
+}
 
 import { cn } from "@/lib/utils";
 
@@ -51,12 +60,39 @@ const ChartContainer = React.forwardRef<
         {...props}
       >
         <ChartStyle id={chartId} config={config} />
-        <RechartsPrimitive.ResponsiveContainer>{children}</RechartsPrimitive.ResponsiveContainer>
+        {/* Render children only after recharts is loaded */}
+        <React.Suspense fallback={<div className="w-full h-full" />}>
+          <ChartRechartsLoader>{children}</ChartRechartsLoader>
+        </React.Suspense>
       </div>
     </ChartContext.Provider>
   );
 });
 ChartContainer.displayName = "Chart";
+
+// Small runtime loader component which dynamically imports recharts and
+// renders the ResponsiveContainer with the provided children. This keeps
+// recharts out of the initial bundle until a chart actually mounts.
+const ChartRechartsLoader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [mod, setMod] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    let mounted = true;
+    loadRecharts().then((m) => {
+      if (mounted) setMod(m);
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (!mod) {
+    return <div className="w-full h-full" />;
+  }
+
+  const ResponsiveContainer = mod.ResponsiveContainer;
+  return <ResponsiveContainer>{children}</ResponsiveContainer>;
+};
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(([_, config]) => config.theme || config.color);
@@ -73,11 +109,11 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
             ([theme, prefix]) => `
 ${prefix} [data-chart=${id}] {
 ${colorConfig
-  .map(([key, itemConfig]) => {
-    const color = itemConfig.theme?.[theme as keyof typeof itemConfig.theme] || itemConfig.color;
-    return color ? `  --color-${key}: ${color};` : null;
-  })
-  .join("\n")}
+                .map(([key, itemConfig]) => {
+                  const color = itemConfig.theme?.[theme as keyof typeof itemConfig.theme] || itemConfig.color;
+                  return color ? `  --color-${key}: ${color};` : null;
+                })
+                .join("\n")}
 }
 `,
           )
@@ -87,19 +123,11 @@ ${colorConfig
   );
 };
 
-const ChartTooltip = RechartsPrimitive.Tooltip;
+// Tooltip is provided by recharts at runtime. Use a generic `any` for props
+// to avoid requiring the recharts types at compile time.
+const ChartTooltip: any = (props: any) => null;
 
-const ChartTooltipContent = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
-    React.ComponentProps<"div"> & {
-      hideLabel?: boolean;
-      hideIndicator?: boolean;
-      indicator?: "line" | "dot" | "dashed";
-      nameKey?: string;
-      labelKey?: string;
-    }
->(
+const ChartTooltipContent = React.forwardRef<HTMLDivElement, any>(
   (
     {
       active,
@@ -225,53 +253,48 @@ const ChartTooltipContent = React.forwardRef<
 );
 ChartTooltipContent.displayName = "ChartTooltip";
 
-const ChartLegend = RechartsPrimitive.Legend;
+// Legend provided by recharts at runtime - use `any` typing here.
+const ChartLegend: any = (props: any) => null;
 
-const ChartLegendContent = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentProps<"div"> &
-    Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
-      hideIcon?: boolean;
-      nameKey?: string;
+const ChartLegendContent = React.forwardRef<HTMLDivElement, any>(
+  ({ className, hideIcon = false, payload, verticalAlign = "bottom", nameKey }, ref) => {
+    const { config } = useChart();
+
+    if (!payload?.length) {
+      return null;
     }
->(({ className, hideIcon = false, payload, verticalAlign = "bottom", nameKey }, ref) => {
-  const { config } = useChart();
 
-  if (!payload?.length) {
-    return null;
-  }
+    return (
+      <div
+        ref={ref}
+        className={cn("flex items-center justify-center gap-4", verticalAlign === "top" ? "pb-3" : "pt-3", className)}
+      >
+        {payload.map((item) => {
+          const key = `${nameKey || item.dataKey || "value"}`;
+          const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
-  return (
-    <div
-      ref={ref}
-      className={cn("flex items-center justify-center gap-4", verticalAlign === "top" ? "pb-3" : "pt-3", className)}
-    >
-      {payload.map((item) => {
-        const key = `${nameKey || item.dataKey || "value"}`;
-        const itemConfig = getPayloadConfigFromPayload(config, item, key);
-
-        return (
-          <div
-            key={item.value}
-            className={cn("flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground")}
-          >
-            {itemConfig?.icon && !hideIcon ? (
-              <itemConfig.icon />
-            ) : (
-              <div
-                className="h-2 w-2 shrink-0 rounded-[2px]"
-                style={{
-                  backgroundColor: item.color,
-                }}
-              />
-            )}
-            {itemConfig?.label}
-          </div>
-        );
-      })}
-    </div>
-  );
-});
+          return (
+            <div
+              key={item.value}
+              className={cn("flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground")}
+            >
+              {itemConfig?.icon && !hideIcon ? (
+                <itemConfig.icon />
+              ) : (
+                <div
+                  className="h-2 w-2 shrink-0 rounded-[2px]"
+                  style={{
+                    backgroundColor: item.color,
+                  }}
+                />
+              )}
+              {itemConfig?.label}
+            </div>
+          );
+        })}
+      </div>
+    );
+  });
 ChartLegendContent.displayName = "ChartLegend";
 
 // Helper to extract item config from a payload.

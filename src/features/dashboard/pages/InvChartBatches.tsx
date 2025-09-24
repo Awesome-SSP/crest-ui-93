@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { BarChart3, PieChart, Users, CheckCircle, Clock, AlertCircle } from "lucide-react";
-import ChartCard from "@/components/ChartCard";
-import StatsCard from "@/components/StatsCard";
+import ChartCard from "@/features/dashboard/components/ChartCard";
+import StatsCard from "@/features/dashboard/components/StatsCard";
 import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
 const activeClaimsData = [
@@ -147,7 +147,7 @@ const InvChartBatches = () => {
                 >
                   <div className="flex items-center space-x-3">
                     <div className={`w-3 h-3 rounded-full ${item.trend === 'up' ? 'bg-chart-2' :
-                        item.trend === 'down' ? 'bg-chart-1' : 'bg-chart-3'
+                      item.trend === 'down' ? 'bg-chart-1' : 'bg-chart-3'
                       }`} />
                     <div>
                       <div className="font-medium text-card-foreground">{item.category}</div>
@@ -159,7 +159,7 @@ const InvChartBatches = () => {
                   <div className="text-right">
                     <div className="font-semibold text-card-foreground">{item.count}</div>
                     <div className={`text-xs ${item.trend === 'up' ? 'text-chart-2' :
-                        item.trend === 'down' ? 'text-chart-1' : 'text-muted-foreground'
+                      item.trend === 'down' ? 'text-chart-1' : 'text-muted-foreground'
                       }`}>
                       {item.trend === 'up' ? '↑' : item.trend === 'down' ? '↓' : '→'}
                       {item.trend === 'stable' ? ' Stable' : ` ${item.trend === 'up' ? 'Increasing' : 'Decreasing'}`}

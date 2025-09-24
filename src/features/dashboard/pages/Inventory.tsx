@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Package, BarChart3, TrendingUp, FileText } from "lucide-react";
-import ChartCard from "@/components/ChartCard";
-import StatsCard from "@/components/StatsCard";
+import ChartCard from "@/features/dashboard/components/ChartCard";
+import StatsCard from "@/features/dashboard/components/StatsCard";
 
 const EmptyChart = ({ title, message }: { title: string, message: string }) => (
   <div className="h-80 flex items-center justify-center">

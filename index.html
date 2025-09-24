@@ -3,23 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>crest-ui</title>
-    <meta name="description" content=" Generated Project" />
+    <title>Crest UI — Dashboard</title>
+    <meta name="description" content="Crest UI dashboard — fast, accessible analytics and reporting." />
     <meta name="author" content="LIKE" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="/" />
+    <meta name="theme-color" content="#0EA5A4" />
 
-    <meta property="og:title" content="crest-ui" />
-    <meta property="og:description" content="Lovable Generated Project" />
+    <meta property="og:title" content="Crest UI" />
+    <meta property="og:description" content="Fast, accessible analytics and reporting UI." />
     <meta property="og:type" content="website" />
-    <!-- <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" /> -->
+    <!-- Uncomment and update with a real image for rich previews -->
+    <!-- <meta property="og:image" content="/og-image.png" /> -->
 
     <meta name="twitter:card" content="summary_large_image" />
-    <!-- <meta name="twitter:site" content="@lovable_dev" /> -->
-    <!-- <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" /> -->
+
+    <!-- Performance: allow early connection to popular CDNs (fonts, analytics) -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <!-- Fav icon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Hint to browser to preload the main module for faster startup -->
+    <link rel="modulepreload" href="/src/app/main.tsx">
   </head>
 
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/src/app/main.tsx"></script>
   </body>
 </html>

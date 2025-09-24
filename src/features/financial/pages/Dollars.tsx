@@ -1,7 +1,7 @@
 import React from 'react';
 import { DollarSign, TrendingUp, BarChart3, Share2, Download } from 'lucide-react';
-import ChartCard from '@/components/ChartCard';
-import StatsCard from '@/components/StatsCard';
+import ChartCard from '@/features/dashboard/components/ChartCard';
+import StatsCard from '@/features/dashboard/components/StatsCard';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ReTooltip, ResponsiveContainer, BarChart, Bar, Cell, PieChart, Pie, Legend } from 'recharts';
 import { toast } from '@/hooks/use-toast';
 

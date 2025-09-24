@@ -55,12 +55,23 @@ export default defineConfig(({ mode }) => {
 
     build: {
       target: "es2020",
+      // inline sourcemaps in dev only; disable in production for smaller bundles
       sourcemap: isDev ? "inline" : false,
       minify: isDev ? false : "esbuild",
+      // show brotli sizes in build output for visibility
+      brotliSize: true,
       rollupOptions: {
         output: {
-          manualChunks: {
-            vendor: ["react", "react-dom"],
+          // create smaller vendor chunks by grouping large deps separately
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('react-dom')) return 'vendor-react-dom';
+              if (id.includes('react')) return 'vendor-react';
+              if (id.includes('recharts')) return 'vendor-recharts';
+              if (id.includes('d3')) return 'vendor-d3';
+              if (id.includes('framer-motion')) return 'vendor-framer-motion';
+              return 'vendor';
+            }
           },
         },
       },

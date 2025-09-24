@@ -1,4 +1,7 @@
 /* stylelint-disable at-rule-no-unknown */
+/* Component styles */
+@import './components.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
